@@ -22,7 +22,7 @@ exports.userbookhistroy = async function (req, res) {
             raw: true,
             where: {
                 customer_id : req.query.userId
-            }
+            }, order:[['id', 'DESC']]
         })
 
         response.body.bookingHistory = bookingHistory

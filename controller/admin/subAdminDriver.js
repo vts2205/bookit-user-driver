@@ -23,6 +23,7 @@ exports.subAdminDriver = async function (req, res) {
             name: req.body.name,
             contact: req.body.contact,
             owner_name: req.body.ownerName,
+            email:'bookit@gmail.com',
             owner_number: req.body.ownerNumber,
             location: req.body.location,
             license_number: req.body.licenseNumber,
@@ -104,13 +105,13 @@ exports.subAdminDriver = async function (req, res) {
             license_back: process.env.licenseFront + driver_id + '_' + time + '.png',
         }
 
-        var responseDriverDocuments = {
-            profile_pic: req.files.profileImage.data,
-            aadhar_back: req.files.aadharBack.data,
-            aadhar_front: req.files.aadharFront.data,
-            license_front: req.files.licenseFront.data,
-            license_back: req.files.licenseBack.data,
-        }
+        // var responseDriverDocuments = {
+        //     profile_pic: req.files.profileImage.data,
+        //     aadhar_back: req.files.aadharBack.data,
+        //     aadhar_front: req.files.aadharFront.data,
+        //     license_front: req.files.licenseFront.data,
+        //     license_back: req.files.licenseBack.data,
+        // }
 
 
         const Documents = await models.documents.findOne({
@@ -164,14 +165,14 @@ exports.subAdminDriver = async function (req, res) {
             rental_agreement2: process.env.ownerAgreement2 + driver_id + '_' + time + '.png',
         }
 
-        let responseOwnerData = {
-            aadhar_front: req.files.aadharFront.data,
-            aadhar_back: req.files.aadharBack.data,
-            pan_card: req.files.panCard.data,
-            passbook: req.files.passbook.data,
-            rental_agreement1: req.files.rentalAgreement1.data,
-            rental_agreement2: req.files.rentalAgreement2.data,
-        }
+        // let responseOwnerData = {
+        //     aadhar_front: req.files.aadharFront.data,
+        //     aadhar_back: req.files.aadharBack.data,
+        //     pan_card: req.files.panCard.data,
+        //     passbook: req.files.passbook.data,
+        //     rental_agreement1: req.files.rentalAgreement1.data,
+        //     rental_agreement2: req.files.rentalAgreement2.data,
+        // }
 
 
         const ownerDocuments = await models.owner.findOne({
@@ -319,9 +320,9 @@ exports.subAdminDriver = async function (req, res) {
         response.body = {
             name: req.body.name,
             contact: req.body.contact,
-            carDocuments: responseCarData,
-            driverDocuments: responseDriverDocuments,
-            ownerDocuments: responseOwnerData,
+            carDocuments: carData,
+            driverDocuments: driverDocuments,
+            ownerDocuments: ownerData,
             ownerId: owner_id,
             carId: car_id,
             driver_id: driver_id,
@@ -331,10 +332,6 @@ exports.subAdminDriver = async function (req, res) {
 
         console.log(response)
         return res.status(200).send(response)
-
-
-
-
     } catch (err) {
         if (err) {
             console.log(err)
