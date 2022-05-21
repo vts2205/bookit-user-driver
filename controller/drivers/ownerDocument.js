@@ -33,7 +33,7 @@ exports.ownerDocuments = async function (req, res) {
         const Documents = await models.owner.findOne({
             raw: true,
             attributes: ['owner_id'],
-            order: [['owner_id', 'DESC']]
+            order: [['id', 'DESC']]
         })
 
 

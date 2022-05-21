@@ -32,7 +32,7 @@ exports.carDocuments = async function (req, res) {
         const carDocument = await models.cars.findOne({
             raw: true,
             attributes: ['car_id'],
-            order: [['car_id', 'DESC']]
+            order: [['id', 'DESC']]
         })
         console.log('++++++++++++')
         console.log(carDocument)

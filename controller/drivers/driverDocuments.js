@@ -31,7 +31,7 @@ exports.driverDocuments = async function (req, res) {
         const Documents = await models.documents.findOne({
             raw: true,
             attributes: ['document_id'],
-            order: [['document_id', 'DESC']]
+            order: [['id', 'DESC']]
         })
 
 
