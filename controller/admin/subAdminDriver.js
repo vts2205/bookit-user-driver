@@ -105,19 +105,19 @@ exports.subAdminDriver = async function (req, res) {
             license_back: process.env.licenseFront + driver_id + '_' + time + '.png',
         }
 
-        // var responseDriverDocuments = {
-        //     profile_pic: req.files.profileImage.data,
-        //     aadhar_back: req.files.aadharBack.data,
-        //     aadhar_front: req.files.aadharFront.data,
-        //     license_front: req.files.licenseFront.data,
-        //     license_back: req.files.licenseBack.data,
-        // }
+        var responseDriverDocuments = {
+            profile_pic: req.files.profileImage.data,
+            aadhar_back: req.files.aadharBack.data,
+            aadhar_front: req.files.aadharFront.data,
+            license_front: req.files.licenseFront.data,
+            license_back: req.files.licenseBack.data,
+        }
 
 
         const Documents = await models.documents.findOne({
             raw: true,
             attributes: ['document_id'],
-            order: [['document_id', 'DESC']]
+            order: [['id', 'DESC']]
         })
 
 
@@ -165,20 +165,20 @@ exports.subAdminDriver = async function (req, res) {
             rental_agreement2: process.env.ownerAgreement2 + driver_id + '_' + time + '.png',
         }
 
-        // let responseOwnerData = {
-        //     aadhar_front: req.files.aadharFront.data,
-        //     aadhar_back: req.files.aadharBack.data,
-        //     pan_card: req.files.panCard.data,
-        //     passbook: req.files.passbook.data,
-        //     rental_agreement1: req.files.rentalAgreement1.data,
-        //     rental_agreement2: req.files.rentalAgreement2.data,
-        // }
+        let responseOwnerData = {
+            aadhar_front: req.files.aadharFront.data,
+            aadhar_back: req.files.aadharBack.data,
+            pan_card: req.files.panCard.data,
+            passbook: req.files.passbook.data,
+            rental_agreement1: req.files.rentalAgreement1.data,
+            rental_agreement2: req.files.rentalAgreement2.data,
+        }
 
 
         const ownerDocuments = await models.owner.findOne({
             raw: true,
             attributes: ['owner_id'],
-            order: [['owner_id', 'DESC']]
+            order: [['id', 'DESC']]
         })
 
 
@@ -194,10 +194,10 @@ exports.subAdminDriver = async function (req, res) {
 
 
 
-        fs.writeFileSync(ownerData.aadhar_front, req.files.aadharFront.data, { mode: 0o755 }, (err) => {
+        fs.writeFileSync(ownerData.aadhar_front, req.files.owneraadharFront.data, { mode: 0o755 }, (err) => {
             if (err) { return console.error(err) }
         })
-        fs.writeFileSync(ownerData.aadhar_back, req.files.aadharBack.data, { mode: 0o755 }, (err) => {
+        fs.writeFileSync(ownerData.aadhar_back, req.files.owneraadharBack.data, { mode: 0o755 }, (err) => {
             if (err) { return console.error(err) }
         })
         fs.writeFileSync(ownerData.pan_card, req.files.panCard.data, { mode: 0o755 }, (err) => {
@@ -254,7 +254,7 @@ exports.subAdminDriver = async function (req, res) {
         const carDocument = await models.cars.findOne({
             raw: true,
             attributes: ['car_id'],
-            order: [['car_id', 'DESC']]
+            order: [['id', 'DESC']]
         })
         console.log('++++++++++++')
         console.log(carDocument)
@@ -320,9 +320,9 @@ exports.subAdminDriver = async function (req, res) {
         response.body = {
             name: req.body.name,
             contact: req.body.contact,
-            carDocuments: carData,
-            driverDocuments: driverDocuments,
-            ownerDocuments: ownerData,
+            carDocuments: responseCarData,
+            driverDocuments: responseDriverDocuments,
+            ownerDocuments: responseOwnerData,
             ownerId: owner_id,
             carId: car_id,
             driver_id: driver_id,
