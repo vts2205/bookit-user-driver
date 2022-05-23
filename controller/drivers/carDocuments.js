@@ -55,24 +55,24 @@ exports.carDocuments = async function (req, res) {
         }
 
 
-        fs.writeFileSync(data.front_image, req.files.frontImage.data, { mode: 0o755 }, (err) => {
+        fs.writeFileSync(data.front_image, req.files.frontImage.data, (err) => {
             if (err) { return console.error(err) }
         })
-        fs.writeFileSync(data.chase_image, req.files.chaseNumber.data, { mode: 0o755 }, (err) => {
+        fs.writeFileSync(data.chase_image, req.files.chaseNumber.data, (err) => {
             if (err) { return console.error(err) }
         })
-        fs.writeFileSync(data.rc_front, req.files.rcFront.data, { mode: 0o755 }, (err) => {
+        fs.writeFileSync(data.rc_front, req.files.rcFront.data, (err) => {
             if (err) { return console.error(err) }
         })
-        fs.writeFileSync(data.rc_back, req.files.rcBack.data, { mode: 0o755 }, (err) => {
+        fs.writeFileSync(data.rc_back, req.files.rcBack.data, (err) => {
             if (err) { return console.error(err) }
         })
-        fs.writeFileSync(data.insurance, req.files.insurance.data, { mode: 0o755 }, (err) => {
+        fs.writeFileSync(data.insurance, req.files.insurance.data, (err) => {
             if (err) { return console.error(err) }
         })
         console.log(req.files.fc !== undefined)
         if (req.files.fc !== undefined) {
-            fs.writeFileSync(data.fc, req.files.fc.data, { mode: 0o755 }, (err) => {
+            fs.writeFileSync(data.fc, req.files.fc.data, (err) => {
                 if (err) { return console.error(err) }
             })
         } else {
