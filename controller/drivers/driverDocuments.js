@@ -1,6 +1,7 @@
 const models = require('../../models/init-models').initModels()
 const fs = require('fs')
 const moment = require('moment')
+const {s3bucketBuffer} = require('../../common/s3bucketBuffer')
 
 exports.driverDocuments = async function (req, res) {
     console.log('Driver Documents')
@@ -41,7 +42,7 @@ exports.driverDocuments = async function (req, res) {
             // models.cars.create(data)
         } else {
             number = parseInt(Documents.document_id.toString())
-            document_id = number+1
+            document_id = number + 1
             data.document_id = document_id
         }
 
@@ -64,27 +65,131 @@ exports.driverDocuments = async function (req, res) {
             if (err) { return console.error(err) }
         })
 
+        const s3data = {}
 
-        await models.documents.create(data)
+        if (typeof req.files.profileImage !== 'undefined') {
+            // fs.writeFileSync(data.profile_pic, req.files.profileImage.data, { mode: 0o755 }, (err) => {
+            //     if (err) { return console.error(err) }
+            // })
+
+            // test
+            // fs.chmodSync(selfie, 0o755)
+            await s3bucketBuffer(data.profile_pic, req.body.driverId, '/profilePic', '/drivers', time).then((url) => {
+                console.log(url)
+                s3data.profile_pic = url.Location
+                //   if (process.env.LIVE === 'true') {
+                //     locationUrl = 'https://d338yng2n0d2es.cloudfront.net/agencyHosting/image/' + req.body.dreamliveID + '_' + timeStamp + '.webp'
+                //   }
+                fs.unlinkSync(data.profile_pic, (err) => {
+                    if (err) {
+                        throw err
+                    }
+                })
+            })
+        }
+        if (typeof req.files.aadharBack !== 'undefined') {
+            // fs.writeFileSync(data.aadhar_back, req.files.aadharBack.data, { mode: 0o755 }, (err) => {
+            //     if (err) { return console.error(err) }
+            // })
+
+            // test
+            // fs.chmodSync(selfie, 0o755)
+            await s3bucketBuffer(data.aadhar_back, req.body.driverId, '/aadharBack', '/drivers', time).then((url) => {
+                console.log(url)
+                s3data.aadhar_back = url.Location
+                //   if (process.env.LIVE === 'true') {
+                //     locationUrl = 'https://d338yng2n0d2es.cloudfront.net/agencyHosting/image/' + req.body.dreamliveID + '_' + timeStamp + '.webp'
+                //   }
+                fs.unlinkSync(data.aadhar_back, (err) => {
+                    if (err) {
+                        throw err
+                    }
+                })
+            })
+        }
+        if (typeof req.files.aadharFront !== 'undefined') {
+            // fs.writeFileSync(data.profile_pic, req.files.profileImage.data, { mode: 0o755 }, (err) => {
+            //     if (err) { return console.error(err) }
+            // })
+
+            // test
+            // fs.chmodSync(selfie, 0o755)
+            await s3bucketBuffer(data.aadhar_front, req.body.driverId, '/aadharFront', '/drivers', time).then((url) => {
+                console.log(url)
+                s3data.aadhar_front = url.Location
+                //   if (process.env.LIVE === 'true') {
+                //     locationUrl = 'https://d338yng2n0d2es.cloudfront.net/agencyHosting/image/' + req.body.dreamliveID + '_' + timeStamp + '.webp'
+                //   }
+                fs.unlinkSync(data.aadhar_front, (err) => {
+                    if (err) {
+                        throw err
+                    }
+                })
+            })
+        }
+        if (typeof req.files.licenseFront !== 'undefined') {
+            // fs.writeFileSync(data.profile_pic, req.files.profileImage.data, { mode: 0o755 }, (err) => {
+            //     if (err) { return console.error(err) }
+            // })
+
+            // test
+            // fs.chmodSync(selfie, 0o755)
+            await s3bucketBuffer(data.license_front, req.body.driverId, '/licenseFront', '/drivers', time).then((url) => {
+                console.log(url)
+                s3data.license_front= url.Location
+                //   if (process.env.LIVE === 'true') {
+                //     locationUrl = 'https://d338yng2n0d2es.cloudfront.net/agencyHosting/image/' + req.body.dreamliveID + '_' + timeStamp + '.webp'
+                //   }
+                fs.unlinkSync(data.license_front, (err) => {
+                    if (err) {
+                        throw err
+                    }
+                })
+            })
+        }
+        if (typeof req.files.licenseBack !== 'undefined') {
+            // fs.writeFileSync(data.profile_pic, req.files.profileImage.data, { mode: 0o755 }, (err) => {
+            //     if (err) { return console.error(err) }
+            // })
+
+            // test
+            // fs.chmodSync(selfie, 0o755)
+            await s3bucketBuffer(data.license_back, req.body.driverId, '/licenseBack', '/drivers', time).then((url) => {
+                console.log(url)
+                s3data.license_back = url.Location
+                //   if (process.env.LIVE === 'true') {
+                //     locationUrl = 'https://d338yng2n0d2es.cloudfront.net/agencyHosting/image/' + req.body.dreamliveID + '_' + timeStamp + '.webp'
+                //   }
+                fs.unlinkSync(data.license_back, (err) => {
+                    if (err) {
+                        throw err
+                    }
+                })
+            })
+        }
+
+
+
+        await models.documents.create(s3data)
 
         const driverIDs = await models.documents.findOne({
             raw: true,
             attributes: ['document_id'],
-            where:{
-                driver_id : req.body.driverId
+            where: {
+                driver_id: req.body.driverId
             }
         })
 
-        await models.drivers.update({document_id: driverIDs.document_id},{
-            where:{
+        await models.drivers.update({ document_id: driverIDs.document_id }, {
+            where: {
                 driver_id: req.body.driverId
             }
         })
         console.log('++++++++++++++++++++')
         console.log(driverIDs)
-        
-     
-        response.body = data
+
+
+        response.body = s3data
 
         // let frontImage = 
         return res.status(200).send(response)

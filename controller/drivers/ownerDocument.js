@@ -1,6 +1,8 @@
 const models = require('../../models/init-models').initModels()
 const fs = require('fs')
 const moment = require('moment')
+const {s3bucketBuffer} = require('../../common/s3bucketBuffer')
+
 
 
 exports.ownerDocuments = async function (req, res) {
@@ -43,7 +45,7 @@ exports.ownerDocuments = async function (req, res) {
             // models.cars.create(data)
         } else {
             number = parseInt(Documents.owner_id.toString())
-            owner_id = number+1
+            owner_id = number + 1
             data.owner_id = owner_id
         }
 
@@ -82,7 +84,134 @@ exports.ownerDocuments = async function (req, res) {
         }
 
 
-        await models.owner.create(data)
+        const s3data = {}
+        if (typeof req.files.aadharFront !== 'undefined') {
+            // fs.writeFileSync(data.profile_pic, req.files.profileImage.data, { mode: 0o755 }, (err) => {
+            //     if (err) { return console.error(err) }
+            // })
+
+            // test
+            // fs.chmodSync(selfie, 0o755)
+            await s3bucketBuffer(data.aadhar_front, req.body.driverId, '/aadharFront', '/owner', time).then((url) => {
+                console.log(url)
+                s3data.aadhar_front = url.Location
+                //   if (process.env.LIVE === 'true') {
+                //     locationUrl = 'https://d338yng2n0d2es.cloudfront.net/agencyHosting/image/' + req.body.dreamliveID + '_' + timeStamp + '.webp'
+                //   }
+                fs.unlinkSync(data.aadhar_front, (err) => {
+                    if (err) {
+                        throw err
+                    }
+                })
+            })
+        }
+
+        if (typeof req.files.aadharBack !== 'undefined') {
+            // fs.writeFileSync(data.profile_pic, req.files.profileImage.data, { mode: 0o755 }, (err) => {
+            //     if (err) { return console.error(err) }
+            // })
+
+            // test
+            // fs.chmodSync(selfie, 0o755)
+            await s3bucketBuffer(data.aadhar_back, req.body.driverId, '/aadharBack', '/owner', time).then((url) => {
+                console.log(url)
+                s3data.aadhar_back = url.Location
+                //   if (process.env.LIVE === 'true') {
+                //     locationUrl = 'https://d338yng2n0d2es.cloudfront.net/agencyHosting/image/' + req.body.dreamliveID + '_' + timeStamp + '.webp'
+                //   }
+                fs.unlinkSync(data.aadhar_back, (err) => {
+                    if (err) {
+                        throw err
+                    }
+                })
+            })
+        }
+
+        if (typeof req.files.panCard !== 'undefined') {
+            // fs.writeFileSync(data.profile_pic, req.files.profileImage.data, { mode: 0o755 }, (err) => {
+            //     if (err) { return console.error(err) }
+            // })
+
+            // test
+            // fs.chmodSync(selfie, 0o755)
+            await s3bucketBuffer(data.pan_card, req.body.driverId, '/panCard', '/owner', time).then((url) => {
+                console.log(url)
+                s3data.pan_card = url.Location
+                //   if (process.env.LIVE === 'true') {
+                //     locationUrl = 'https://d338yng2n0d2es.cloudfront.net/agencyHosting/image/' + req.body.dreamliveID + '_' + timeStamp + '.webp'
+                //   }
+                fs.unlinkSync(data.pan_card, (err) => {
+                    if (err) {
+                        throw err
+                    }
+                })
+            })
+        }
+
+        if (typeof req.files.passbook !== 'undefined') {
+            // fs.writeFileSync(data.profile_pic, req.files.profileImage.data, { mode: 0o755 }, (err) => {
+            //     if (err) { return console.error(err) }
+            // })
+
+            // test
+            // fs.chmodSync(selfie, 0o755)
+            await s3bucketBuffer(data.passbook, req.body.driverId, '/passbook', '/owner', time).then((url) => {
+                console.log(url)
+                s3data.passbook = url.Location
+                //   if (process.env.LIVE === 'true') {
+                //     locationUrl = 'https://d338yng2n0d2es.cloudfront.net/agencyHosting/image/' + req.body.dreamliveID + '_' + timeStamp + '.webp'
+                //   }
+                fs.unlinkSync(data.passbook, (err) => {
+                    if (err) {
+                        throw err
+                    }
+                })
+            })
+        }
+        if (typeof req.files.rentalAgreement1 !== 'undefined') {
+            // fs.writeFileSync(data.profile_pic, req.files.profileImage.data, { mode: 0o755 }, (err) => {
+            //     if (err) { return console.error(err) }
+            // })
+
+            // test
+            // fs.chmodSync(selfie, 0o755)
+            await s3bucketBuffer(data.rental_agreement1, req.body.driverId, '/rentalAgreement1', '/owner', time).then((url) => {
+                console.log(url)
+                s3data.rental_agreement1 = url.Location
+                //   if (process.env.LIVE === 'true') {
+                //     locationUrl = 'https://d338yng2n0d2es.cloudfront.net/agencyHosting/image/' + req.body.dreamliveID + '_' + timeStamp + '.webp'
+                //   }
+                fs.unlinkSync(data.rental_agreement1, (err) => {
+                    if (err) {
+                        throw err
+                    }
+                })
+            })
+        }
+        if (typeof req.files.rentalAgreement2 !== 'undefined') {
+            // fs.writeFileSync(data.profile_pic, req.files.profileImage.data, { mode: 0o755 }, (err) => {
+            //     if (err) { return console.error(err) }
+            // })
+
+            // test
+            // fs.chmodSync(selfie, 0o755)
+            await s3bucketBuffer(data.rental_agreement2, req.body.driverId, '/rentalAgreement2', '/owner', time).then((url) => {
+                console.log(url)
+                s3data.rental_agreement2 = url.Location
+                //   if (process.env.LIVE === 'true') {
+                //     locationUrl = 'https://d338yng2n0d2es.cloudfront.net/agencyHosting/image/' + req.body.dreamliveID + '_' + timeStamp + '.webp'
+                //   }
+                fs.unlinkSync(data.rental_agreement2, (err) => {
+                    if (err) {
+                        throw err
+                    }
+                })
+            })
+        }
+
+
+
+        await models.owner.create(s3data)
 
         const driverIDs = await models.owner.findOne({
             raw: true,
@@ -97,7 +226,7 @@ exports.ownerDocuments = async function (req, res) {
                 driver_id: req.body.driverId
             }
         })
-        response.body = data
+        response.body = s3data
 
         // let frontImage = 
         return res.status(200).send(response)
