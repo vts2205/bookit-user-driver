@@ -51,7 +51,7 @@ exports.registerDriver = async function (req, res) {
                    // password: req.body.password,
                    //fcm_token: req.body.fcmToken,
                     password: 'raja',
-                    fcm_token: req.body.fcmToken,
+                    fcm_token: null,
                     driver_status : 'pending',
                     license_number : req.body.licensenumber,
                     expiry_date :  req.body.expirydate,

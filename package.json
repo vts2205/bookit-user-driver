@@ -24,6 +24,7 @@
   },
   "homepage": "https://gitlab.com/sharathoreo/bookitapi#readme",
   "dependencies": {
+    "aws-sdk": "^2.1140.0",
     "bcrypt": "^5.0.1",
     "body-parser": "^1.19.2",
     "cookie-parser": "^1.4.6",
@@ -48,7 +49,8 @@
     "razorpay": "^2.8.1",
     "request": "^2.88.2",
     "sequelize": "^6.17.0",
-    "sequelize-auto": "^0.8.8"
+    "sequelize-auto": "^0.8.8",
+    "webp-converter": "^2.3.3"
   },
   "devDependencies": {
     "nodemon": "^2.0.15",
