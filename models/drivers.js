@@ -17,7 +17,7 @@ module.exports = function(sequelize, DataTypes) {
     },
     email: {
       type: DataTypes.STRING(255),
-      allowNull: true
+      allowNull: false
     },
     contact: {
       type: DataTypes.STRING(20),
@@ -91,7 +91,7 @@ module.exports = function(sequelize, DataTypes) {
     },
     fcm_token: {
       type: DataTypes.STRING(255),
-      allowNull: false
+      allowNull: true
     },
     referral: {
       type: DataTypes.STRING(255),

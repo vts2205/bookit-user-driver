@@ -29,7 +29,7 @@ exports.subAdminDriver = async function (req, res) {
             license_number: req.body.licenseNumber,
             expiry_date: req.body.expiryDate,
             password: newOTP.generate(8, { alphabets: true, upperCase: true, specialChar: true }),
-            fcm_token: req.body.fcmToken,
+            fcm_token: null,
             driver_status: 'pending',
             rental_type: '1',
             referral: newOTP.generate(8, { alphabets: true, upperCase: true, specialChar: true }),
