@@ -86,7 +86,7 @@ exports.carDocuments = async function (req, res) {
 
             // test
             // fs.chmodSync(selfie, 0o755)
-            await s3bucketBuffer(data.front_image, req.body.driverId, '/frontImage', '/cars', time).then((url) => {
+            await s3bucketBuffer(data.front_image, req.body.driverId, '/frontImage', '/cars', time,req.files.frontImage.data).then((url) => {
                 console.log(url)
                 s3data.front_image = url.Location
                 //   if (process.env.LIVE === 'true') {
@@ -108,7 +108,7 @@ exports.carDocuments = async function (req, res) {
 
             // test
             // fs.chmodSync(selfie, 0o755)
-            await s3bucketBuffer(data.chase_image, req.body.driverId, '/chaseNumber', '/cars', time).then((url) => {
+            await s3bucketBuffer(data.chase_image, req.body.driverId, '/chaseNumber', '/cars', time,req.files.chaseNumber.data).then((url) => {
                 console.log(url)
                 s3data.chase_image = url.Location
                 //   if (process.env.LIVE === 'true') {
@@ -131,7 +131,7 @@ exports.carDocuments = async function (req, res) {
 
             // test
             // fs.chmodSync(selfie, 0o755)
-            await s3bucketBuffer(data.rc_front, req.body.driverId, '/rcFront', '/cars', time).then((url) => {
+            await s3bucketBuffer(data.rc_front, req.body.driverId, '/rcFront', '/cars', time, req.files.rcFront.data).then((url) => {
                 console.log(url)
                 s3data.rc_front = url.Location
                 //   if (process.env.LIVE === 'true') {
@@ -151,7 +151,7 @@ exports.carDocuments = async function (req, res) {
 
             // test
             // fs.chmodSync(selfie, 0o755)
-            await s3bucketBuffer(data.rc_back, req.body.driverId, '/rcBack', '/cars', time).then((url) => {
+            await s3bucketBuffer(data.rc_back, req.body.driverId, '/rcBack', '/cars', time, req.files.rcBack.data).then((url) => {
                 console.log(url)
                 s3data.rc_back = url.Location
                 //   if (process.env.LIVE === 'true') {
@@ -171,7 +171,7 @@ exports.carDocuments = async function (req, res) {
 
             // test
             // fs.chmodSync(selfie, 0o755)
-            await s3bucketBuffer(data.insurance, req.body.driverId, '/insurance', '/cars', time).then((url) => {
+            await s3bucketBuffer(data.insurance, req.body.driverId, '/insurance', '/cars', time,req.files.insurance.data).then((url) => {
                 console.log(url)
                 s3data.insurance = url.Location
                 //   if (process.env.LIVE === 'true') {
@@ -191,7 +191,7 @@ exports.carDocuments = async function (req, res) {
 
             // test
             // fs.chmodSync(selfie, 0o755)
-            await s3bucketBuffer(data.fc, req.body.driverId, '/fc', '/cars', time).then((url) => {
+            await s3bucketBuffer(data.fc, req.body.driverId, '/fc', '/cars', time, time,req.files.fc.data).then((url) => {
                 console.log(url)
                 s3data.fc = url.Location
                 //   if (process.env.LIVE === 'true') {
