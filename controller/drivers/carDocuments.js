@@ -1,7 +1,7 @@
 const models = require('../../models/init-models').initModels()
 const fs = require('fs')
 const moment = require('moment')
-const {s3bucketBuffer} = require('../../common/s3bucketBuffer')
+const {s3bucketBuffer} = require('../../common/s3bucketBuffer1')
 
 
 exports.carDocuments = async function (req, res) {
