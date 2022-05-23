@@ -14,7 +14,7 @@ const s3bucketBuffer = async function s3uploadBuffer(tempImgPath, userId, path, 
           Bucket: process.env.S3_BUCKET_NAME + urlPath + path,
           Body: bufferData,
           Key: screenShotFilename,
-          ACL: 'public-read' // Make this object public
+          ACL: 'public-read-write' // Make this object public
         }, function (err, data) {
           console.log(err)
           console.log(data)
