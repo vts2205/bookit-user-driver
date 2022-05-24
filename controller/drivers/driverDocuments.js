@@ -1,15 +1,15 @@
 const models = require('../../models/init-models').initModels()
 const fs = require('fs')
 const moment = require('moment')
-const {s3bucketBuffer} = require('../../common/s3bucketBuffer')
+const { s3bucketBuffer } = require('../../common/s3bucketBuffer1')
 
-exports.driverDocuments = async function (req, res) {
+exports.driverDocuments = async function(req, res) {
     console.log('Driver Documents')
     console.log(req.body)
     console.log(req.files)
 
     let response = {
-        statusCode: 1,   // 1 success 0 failure
+        statusCode: 1, // 1 success 0 failure
         code: 200,
         message: 'Success',
         body: {}
@@ -32,14 +32,16 @@ exports.driverDocuments = async function (req, res) {
         const Documents = await models.documents.findOne({
             raw: true,
             attributes: ['document_id'],
-            order: [['id', 'DESC']]
+            order: [
+                ['id', 'DESC']
+            ]
         })
 
 
         if (Documents === null) {
             document_id = '1'
             data.document_id = document_id
-            // models.cars.create(data)
+                // models.cars.create(data)
         } else {
             number = parseInt(Documents.document_id.toString())
             document_id = number + 1
@@ -49,19 +51,19 @@ exports.driverDocuments = async function (req, res) {
 
 
 
-        fs.writeFileSync(data.profile_pic, req.files.profileImage.data, { mode: 0o755 }, (err) => {
+        fs.writeFileSync(data.profile_pic, req.files.profileImage.data, (err) => {
             if (err) { return console.error(err) }
         })
-        fs.writeFileSync(data.aadhar_back, req.files.aadharBack.data, { mode: 0o755 }, (err) => {
+        fs.writeFileSync(data.aadhar_back, req.files.aadharBack.data, (err) => {
             if (err) { return console.error(err) }
         })
-        fs.writeFileSync(data.aadhar_front, req.files.aadharFront.data, { mode: 0o755 }, (err) => {
+        fs.writeFileSync(data.aadhar_front, req.files.aadharFront.data, (err) => {
             if (err) { return console.error(err) }
         })
-        fs.writeFileSync(data.license_front, req.files.licenseFront.data, { mode: 0o755 }, (err) => {
+        fs.writeFileSync(data.license_front, req.files.licenseFront.data, (err) => {
             if (err) { return console.error(err) }
         })
-        fs.writeFileSync(data.license_back, req.files.licenseBack.data, { mode: 0o755 }, (err) => {
+        fs.writeFileSync(data.license_back, req.files.licenseBack.data, (err) => {
             if (err) { return console.error(err) }
         })
 
@@ -74,12 +76,12 @@ exports.driverDocuments = async function (req, res) {
 
             // test
             // fs.chmodSync(selfie, 0o755)
-            await s3bucketBuffer(data.profile_pic, req.body.driverId, '/profilePic', '/drivers', time).then((url) => {
+            await s3bucketBuffer(data.profile_pic, req.body.driverId, '/profilePic', '/drivers', time, req.files.profileImage.data).then((url) => {
                 console.log(url)
                 s3data.profile_pic = url.Location
-                //   if (process.env.LIVE === 'true') {
-                //     locationUrl = 'https://d338yng2n0d2es.cloudfront.net/agencyHosting/image/' + req.body.dreamliveID + '_' + timeStamp + '.webp'
-                //   }
+                    //   if (process.env.LIVE === 'true') {
+                    //     locationUrl = 'https://d338yng2n0d2es.cloudfront.net/agencyHosting/image/' + req.body.dreamliveID + '_' + timeStamp + '.webp'
+                    //   }
                 fs.unlinkSync(data.profile_pic, (err) => {
                     if (err) {
                         throw err
@@ -94,12 +96,12 @@ exports.driverDocuments = async function (req, res) {
 
             // test
             // fs.chmodSync(selfie, 0o755)
-            await s3bucketBuffer(data.aadhar_back, req.body.driverId, '/aadharBack', '/drivers', time).then((url) => {
+            await s3bucketBuffer(data.aadhar_back, req.body.driverId, '/aadharBack', '/drivers', time, req.files.aadharBack.data).then((url) => {
                 console.log(url)
                 s3data.aadhar_back = url.Location
-                //   if (process.env.LIVE === 'true') {
-                //     locationUrl = 'https://d338yng2n0d2es.cloudfront.net/agencyHosting/image/' + req.body.dreamliveID + '_' + timeStamp + '.webp'
-                //   }
+                    //   if (process.env.LIVE === 'true') {
+                    //     locationUrl = 'https://d338yng2n0d2es.cloudfront.net/agencyHosting/image/' + req.body.dreamliveID + '_' + timeStamp + '.webp'
+                    //   }
                 fs.unlinkSync(data.aadhar_back, (err) => {
                     if (err) {
                         throw err
@@ -114,12 +116,12 @@ exports.driverDocuments = async function (req, res) {
 
             // test
             // fs.chmodSync(selfie, 0o755)
-            await s3bucketBuffer(data.aadhar_front, req.body.driverId, '/aadharFront', '/drivers', time).then((url) => {
+            await s3bucketBuffer(data.aadhar_front, req.body.driverId, '/aadharFront', '/drivers', time, req.files.aadharFront.data).then((url) => {
                 console.log(url)
                 s3data.aadhar_front = url.Location
-                //   if (process.env.LIVE === 'true') {
-                //     locationUrl = 'https://d338yng2n0d2es.cloudfront.net/agencyHosting/image/' + req.body.dreamliveID + '_' + timeStamp + '.webp'
-                //   }
+                    //   if (process.env.LIVE === 'true') {
+                    //     locationUrl = 'https://d338yng2n0d2es.cloudfront.net/agencyHosting/image/' + req.body.dreamliveID + '_' + timeStamp + '.webp'
+                    //   }
                 fs.unlinkSync(data.aadhar_front, (err) => {
                     if (err) {
                         throw err
@@ -134,12 +136,12 @@ exports.driverDocuments = async function (req, res) {
 
             // test
             // fs.chmodSync(selfie, 0o755)
-            await s3bucketBuffer(data.license_front, req.body.driverId, '/licenseFront', '/drivers', time).then((url) => {
+            await s3bucketBuffer(data.license_front, req.body.driverId, '/licenseFront', '/drivers', time, req.files.licenseFront.data).then((url) => {
                 console.log(url)
-                s3data.license_front= url.Location
-                //   if (process.env.LIVE === 'true') {
-                //     locationUrl = 'https://d338yng2n0d2es.cloudfront.net/agencyHosting/image/' + req.body.dreamliveID + '_' + timeStamp + '.webp'
-                //   }
+                s3data.license_front = url.Location
+                    //   if (process.env.LIVE === 'true') {
+                    //     locationUrl = 'https://d338yng2n0d2es.cloudfront.net/agencyHosting/image/' + req.body.dreamliveID + '_' + timeStamp + '.webp'
+                    //   }
                 fs.unlinkSync(data.license_front, (err) => {
                     if (err) {
                         throw err
@@ -154,12 +156,12 @@ exports.driverDocuments = async function (req, res) {
 
             // test
             // fs.chmodSync(selfie, 0o755)
-            await s3bucketBuffer(data.license_back, req.body.driverId, '/licenseBack', '/drivers', time).then((url) => {
+            await s3bucketBuffer(data.license_back, req.body.driverId, '/licenseBack', '/drivers', time, req.files.licenseBack.data).then((url) => {
                 console.log(url)
                 s3data.license_back = url.Location
-                //   if (process.env.LIVE === 'true') {
-                //     locationUrl = 'https://d338yng2n0d2es.cloudfront.net/agencyHosting/image/' + req.body.dreamliveID + '_' + timeStamp + '.webp'
-                //   }
+                    //   if (process.env.LIVE === 'true') {
+                    //     locationUrl = 'https://d338yng2n0d2es.cloudfront.net/agencyHosting/image/' + req.body.dreamliveID + '_' + timeStamp + '.webp'
+                    //   }
                 fs.unlinkSync(data.license_back, (err) => {
                     if (err) {
                         throw err
