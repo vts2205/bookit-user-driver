@@ -17,6 +17,8 @@ exports.ownerDocuments = async function(req, res) {
         body: {}
     }
 
+    const s3data = { driver_id: req.body.driverId, }
+
     let owner_id = ''
     try {
 
@@ -43,12 +45,12 @@ exports.ownerDocuments = async function(req, res) {
 
         if (Documents === null) {
             owner_id = '1'
-            data.owner_id = owner_id
+            s3data.owner_id = owner_id
                 // models.cars.create(data)
         } else {
             number = parseInt(Documents.owner_id.toString())
             owner_id = number + 1
-            data.owner_id = owner_id
+            s3data.owner_id = owner_id
         }
 
 
@@ -86,7 +88,7 @@ exports.ownerDocuments = async function(req, res) {
         }
 
 
-        const s3data = {}
+
         if (typeof req.files.aadharFront !== 'undefined') {
             // fs.writeFileSync(data.profile_pic, req.files.profileImage.data, { mode: 0o755 }, (err) => {
             //     if (err) { return console.error(err) }

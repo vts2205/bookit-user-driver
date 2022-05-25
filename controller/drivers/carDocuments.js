@@ -1,25 +1,27 @@
 const models = require('../../models/init-models').initModels()
 const fs = require('fs')
 const moment = require('moment')
-const {s3bucketBuffer} = require('../../common/s3bucketBuffer1')
+const { s3bucketBuffer } = require('../../common/s3bucketBuffer1')
 
 
-exports.carDocuments = async function (req, res) {
+exports.carDocuments = async function(req, res) {
     console.log('Car Documents')
     console.log(req.body)
     console.log(req.files)
 
     let response = {
-        statusCode: 1,   // 1 success 0 failure
+        statusCode: 1, // 1 success 0 failure
         code: 200,
         message: 'Success',
         body: {}
     }
+    const s3data = { driver_id: req.body.driverId }
 
     let car_id = ''
     try {
 
         var time = moment().valueOf()
+
         var data = {
             driver_id: req.body.driverId,
             front_image: process.env.frontPath + req.body.driverId + '_' + time + '.png',
@@ -34,7 +36,9 @@ exports.carDocuments = async function (req, res) {
         const carDocument = await models.cars.findOne({
             raw: true,
             attributes: ['car_id'],
-            order: [['id', 'DESC']]
+            order: [
+                ['id', 'DESC']
+            ]
         })
         console.log('++++++++++++')
         console.log(carDocument)
@@ -42,8 +46,8 @@ exports.carDocuments = async function (req, res) {
 
         if (carDocument === null) {
             car_id = '1'
-            data.car_id = car_id
-            // models.cars.create(data)
+            s3data.car_id = car_id
+                // models.cars.create(data)
         } else {
             let number = parseInt(carDocument.car_id.toString())
             console.log('))))))))')
@@ -51,7 +55,7 @@ exports.carDocuments = async function (req, res) {
             car_id = number + 1
             console.log('))))))))+++++++')
             console.log(car_id)
-            data.car_id = car_id
+            s3data.car_id = car_id
         }
 
 
@@ -78,7 +82,7 @@ exports.carDocuments = async function (req, res) {
         } else {
             data.fc = null
         }
-        const s3data = {}
+
         if (typeof req.files.frontImage !== 'undefined') {
             // fs.writeFileSync(data.profile_pic, req.files.profileImage.data, { mode: 0o755 }, (err) => {
             //     if (err) { return console.error(err) }
@@ -86,12 +90,12 @@ exports.carDocuments = async function (req, res) {
 
             // test
             // fs.chmodSync(selfie, 0o755)
-            await s3bucketBuffer(data.front_image, req.body.driverId, '/frontImage', '/cars', time,req.files.frontImage.data).then((url) => {
+            await s3bucketBuffer(data.front_image, req.body.driverId, '/frontImage', '/cars', time, req.files.frontImage.data).then((url) => {
                 console.log(url)
                 s3data.front_image = url.Location
-                //   if (process.env.LIVE === 'true') {
-                //     locationUrl = 'https://d338yng2n0d2es.cloudfront.net/agencyHosting/image/' + req.body.dreamliveID + '_' + timeStamp + '.webp'
-                //   }
+                    //   if (process.env.LIVE === 'true') {
+                    //     locationUrl = 'https://d338yng2n0d2es.cloudfront.net/agencyHosting/image/' + req.body.dreamliveID + '_' + timeStamp + '.webp'
+                    //   }
                 fs.unlinkSync(data.front_image, (err) => {
                     if (err) {
                         throw err
@@ -108,12 +112,12 @@ exports.carDocuments = async function (req, res) {
 
             // test
             // fs.chmodSync(selfie, 0o755)
-            await s3bucketBuffer(data.chase_image, req.body.driverId, '/chaseNumber', '/cars', time,req.files.chaseNumber.data).then((url) => {
+            await s3bucketBuffer(data.chase_image, req.body.driverId, '/chaseNumber', '/cars', time, req.files.chaseNumber.data).then((url) => {
                 console.log(url)
                 s3data.chase_image = url.Location
-                //   if (process.env.LIVE === 'true') {
-                //     locationUrl = 'https://d338yng2n0d2es.cloudfront.net/agencyHosting/image/' + req.body.dreamliveID + '_' + timeStamp + '.webp'
-                //   }
+                    //   if (process.env.LIVE === 'true') {
+                    //     locationUrl = 'https://d338yng2n0d2es.cloudfront.net/agencyHosting/image/' + req.body.dreamliveID + '_' + timeStamp + '.webp'
+                    //   }
                 fs.unlinkSync(data.chase_image, (err) => {
                     if (err) {
                         throw err
@@ -123,7 +127,7 @@ exports.carDocuments = async function (req, res) {
         }
 
 
-        
+
         if (typeof req.files.rcFront !== 'undefined') {
             // fs.writeFileSync(data.profile_pic, req.files.profileImage.data, { mode: 0o755 }, (err) => {
             //     if (err) { return console.error(err) }
@@ -134,9 +138,9 @@ exports.carDocuments = async function (req, res) {
             await s3bucketBuffer(data.rc_front, req.body.driverId, '/rcFront', '/cars', time, req.files.rcFront.data).then((url) => {
                 console.log(url)
                 s3data.rc_front = url.Location
-                //   if (process.env.LIVE === 'true') {
-                //     locationUrl = 'https://d338yng2n0d2es.cloudfront.net/agencyHosting/image/' + req.body.dreamliveID + '_' + timeStamp + '.webp'
-                //   }
+                    //   if (process.env.LIVE === 'true') {
+                    //     locationUrl = 'https://d338yng2n0d2es.cloudfront.net/agencyHosting/image/' + req.body.dreamliveID + '_' + timeStamp + '.webp'
+                    //   }
                 fs.unlinkSync(data.rc_front, (err) => {
                     if (err) {
                         throw err
@@ -154,9 +158,9 @@ exports.carDocuments = async function (req, res) {
             await s3bucketBuffer(data.rc_back, req.body.driverId, '/rcBack', '/cars', time, req.files.rcBack.data).then((url) => {
                 console.log(url)
                 s3data.rc_back = url.Location
-                //   if (process.env.LIVE === 'true') {
-                //     locationUrl = 'https://d338yng2n0d2es.cloudfront.net/agencyHosting/image/' + req.body.dreamliveID + '_' + timeStamp + '.webp'
-                //   }
+                    //   if (process.env.LIVE === 'true') {
+                    //     locationUrl = 'https://d338yng2n0d2es.cloudfront.net/agencyHosting/image/' + req.body.dreamliveID + '_' + timeStamp + '.webp'
+                    //   }
                 fs.unlinkSync(data.rc_back, (err) => {
                     if (err) {
                         throw err
@@ -171,12 +175,12 @@ exports.carDocuments = async function (req, res) {
 
             // test
             // fs.chmodSync(selfie, 0o755)
-            await s3bucketBuffer(data.insurance, req.body.driverId, '/insurance', '/cars', time,req.files.insurance.data).then((url) => {
+            await s3bucketBuffer(data.insurance, req.body.driverId, '/insurance', '/cars', time, req.files.insurance.data).then((url) => {
                 console.log(url)
                 s3data.insurance = url.Location
-                //   if (process.env.LIVE === 'true') {
-                //     locationUrl = 'https://d338yng2n0d2es.cloudfront.net/agencyHosting/image/' + req.body.dreamliveID + '_' + timeStamp + '.webp'
-                //   }
+                    //   if (process.env.LIVE === 'true') {
+                    //     locationUrl = 'https://d338yng2n0d2es.cloudfront.net/agencyHosting/image/' + req.body.dreamliveID + '_' + timeStamp + '.webp'
+                    //   }
                 fs.unlinkSync(data.insurance, (err) => {
                     if (err) {
                         throw err
@@ -191,12 +195,12 @@ exports.carDocuments = async function (req, res) {
 
             // test
             // fs.chmodSync(selfie, 0o755)
-            await s3bucketBuffer(data.fc, req.body.driverId, '/fc', '/cars', time, time,req.files.fc.data).then((url) => {
+            await s3bucketBuffer(data.fc, req.body.driverId, '/fc', '/cars', time, req.files.fc.data).then((url) => {
                 console.log(url)
                 s3data.fc = url.Location
-                //   if (process.env.LIVE === 'true') {
-                //     locationUrl = 'https://d338yng2n0d2es.cloudfront.net/agencyHosting/image/' + req.body.dreamliveID + '_' + timeStamp + '.webp'
-                //   }
+                    //   if (process.env.LIVE === 'true') {
+                    //     locationUrl = 'https://d338yng2n0d2es.cloudfront.net/agencyHosting/image/' + req.body.dreamliveID + '_' + timeStamp + '.webp'
+                    //   }
                 fs.unlinkSync(data.fc, (err) => {
                     if (err) {
                         throw err

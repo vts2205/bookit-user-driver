@@ -19,6 +19,10 @@ exports.subAdminDriver = async function(req, res) {
         code: 200,
         message: 'Success'
     }
+
+    const s3data = {}
+    const s3DataCar = {}
+    const s3DataOwner = {}
     try {
         var time = moment().valueOf()
         const dataJson = {
@@ -82,6 +86,9 @@ exports.subAdminDriver = async function(req, res) {
                 console.log('++++++++ Enters If Condition ++++++++++')
                 driver_id = 'driver_1'
                 dataJson.driver_id = driver_id
+                s3data.driver_id = driver_id
+                s3DataCar.driver_id = driver_id
+                s3DataOwner.driver_id = driver_id
                 await models.drivers.create(dataJson)
             } else {
                 console.log(driverId.driver_id)
@@ -94,13 +101,14 @@ exports.subAdminDriver = async function(req, res) {
                     console.log(driver_id)
 
                 dataJson.driver_id = driver_id
+                s3data.driver_id = driver_id
+                s3DataCar.driver_id = driver_id
+                s3DataOwner.driver_id = driver_id
                 await models.drivers.create(dataJson)
             }
         }
 
-        const s3data = {}
-        const s3DataCar = {}
-        const s3DataOwner = {}
+
 
         var driverDocuments = {
             driver_id: driver_id,
@@ -133,11 +141,14 @@ exports.subAdminDriver = async function(req, res) {
         if (Documents === null) {
             document_id = '1'
             driverDocuments.document_id = document_id
+            s3data.document_id = document_id
                 // models.cars.create(data)
         } else {
             number = parseInt(Documents.document_id.toString())
             document_id = number + 1
             driverDocuments.document_id = document_id
+            s3data.document_id = document_id
+
         }
 
 
@@ -300,11 +311,13 @@ exports.subAdminDriver = async function(req, res) {
         if (ownerDocuments === null) {
             owner_id = '1'
             ownerData.owner_id = owner_id
+            s3DataOwner.owner_id = owner_id
                 // models.cars.create(data)
         } else {
             number = parseInt(ownerDocuments.owner_id.toString())
             owner_id = number + 1
             ownerData.owner_id = owner_id
+            s3DataOwner.owner_id = owner_id
         }
 
 
@@ -507,6 +520,7 @@ exports.subAdminDriver = async function(req, res) {
         if (carDocument === null) {
             car_id = '1'
             carData.car_id = car_id
+            s3DataCar.car_id = car_id
                 // models.cars.create(data)
         } else {
             let number = parseInt(carDocument.car_id.toString())
@@ -516,6 +530,8 @@ exports.subAdminDriver = async function(req, res) {
             console.log('))))))))+++++++')
             console.log(car_id)
             carData.car_id = car_id
+            s3DataCar.car_id = car_id
+
         }
 
 

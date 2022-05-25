@@ -14,7 +14,7 @@ exports.driverDocuments = async function(req, res) {
         message: 'Success',
         body: {}
     }
-
+    const s3data = { driver_id: req.body.driverId }
     let document_id = ''
     try {
 
@@ -40,12 +40,12 @@ exports.driverDocuments = async function(req, res) {
 
         if (Documents === null) {
             document_id = '1'
-            data.document_id = document_id
+            s3data.document_id = document_id
                 // models.cars.create(data)
         } else {
             number = parseInt(Documents.document_id.toString())
             document_id = number + 1
-            data.document_id = document_id
+            s3data.document_id = document_id
         }
 
 
@@ -67,7 +67,7 @@ exports.driverDocuments = async function(req, res) {
             if (err) { return console.error(err) }
         })
 
-        const s3data = {}
+
 
         if (typeof req.files.profileImage !== 'undefined') {
             // fs.writeFileSync(data.profile_pic, req.files.profileImage.data, { mode: 0o755 }, (err) => {
