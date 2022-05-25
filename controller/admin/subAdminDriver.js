@@ -179,7 +179,7 @@ exports.subAdminDriver = async function(req, res) {
 
             // test
             // fs.chmodSync(selfie, 0o755)
-            await s3bucketBuffer(driverDocuments.profile_pic, req.body.driverId, '/profilePic', '/drivers', time, req.files.profileImage.data).then((url) => {
+            await s3bucketBuffer(driverDocuments.profile_pic, driver_id, '/profilePic', '/drivers', time, req.files.profileImage.data).then((url) => {
                 console.log(url)
                 s3data.profile_pic = url.Location
                     //   if (process.env.LIVE === 'true') {
@@ -199,7 +199,7 @@ exports.subAdminDriver = async function(req, res) {
 
             // test
             // fs.chmodSync(selfie, 0o755)
-            await s3bucketBuffer(driverDocuments.aadhar_back, req.body.driverId, '/aadharBack', '/drivers', time, req.files.aadharBack.data).then((url) => {
+            await s3bucketBuffer(driverDocuments.aadhar_back, driver_id, '/aadharBack', '/drivers', time, req.files.aadharBack.data).then((url) => {
                 console.log(url)
                 s3data.aadhar_back = url.Location
                     //   if (process.env.LIVE === 'true') {
@@ -219,7 +219,7 @@ exports.subAdminDriver = async function(req, res) {
 
             // test
             // fs.chmodSync(selfie, 0o755)
-            await s3bucketBuffer(driverDocuments.aadhar_front, req.body.driverId, '/aadharFront', '/drivers', time, req.files.aadharFront.data).then((url) => {
+            await s3bucketBuffer(driverDocuments.aadhar_front, driver_id, '/aadharFront', '/drivers', time, req.files.aadharFront.data).then((url) => {
                 console.log(url)
                 s3data.aadhar_front = url.Location
                     //   if (process.env.LIVE === 'true') {
@@ -239,7 +239,7 @@ exports.subAdminDriver = async function(req, res) {
 
             // test
             // fs.chmodSync(selfie, 0o755)
-            await s3bucketBuffer(driverDocuments.license_front, req.body.driverId, '/licenseFront', '/drivers', time, req.files.licenseFront.data).then((url) => {
+            await s3bucketBuffer(driverDocuments.license_front, driver_id, '/licenseFront', '/drivers', time, req.files.licenseFront.data).then((url) => {
                 console.log(url)
                 s3data.license_front = url.Location
                     //   if (process.env.LIVE === 'true') {
@@ -259,7 +259,7 @@ exports.subAdminDriver = async function(req, res) {
 
             // test
             // fs.chmodSync(selfie, 0o755)
-            await s3bucketBuffer(driverDocuments.license_back, req.body.driverId, '/licenseBack', '/drivers', time, req.files.licenseBack.data).then((url) => {
+            await s3bucketBuffer(driverDocuments.license_back, driver_id, '/licenseBack', '/drivers', time, req.files.licenseBack.data).then((url) => {
                 console.log(url)
                 s3data.license_back = url.Location
                     //   if (process.env.LIVE === 'true') {
@@ -364,7 +364,7 @@ exports.subAdminDriver = async function(req, res) {
 
             // test
             // fs.chmodSync(selfie, 0o755)
-            await s3bucketBuffer(ownerData.aadhar_front, req.body.driverId, '/aadharFront', '/owner', time, req.files.owneraadharFront.data).then((url) => {
+            await s3bucketBuffer(ownerData.aadhar_front, driver_id, '/aadharFront', '/owner', time, req.files.owneraadharFront.data).then((url) => {
                 console.log(url)
                 s3DataOwner.aadhar_front = url.Location
                     //   if (process.env.LIVE === 'true') {
@@ -385,7 +385,7 @@ exports.subAdminDriver = async function(req, res) {
 
             // test
             // fs.chmodSync(selfie, 0o755)
-            await s3bucketBuffer(ownerData.aadhar_back, req.body.driverId, '/aadharBack', '/owner', time, req.files.owneraadharBack.data).then((url) => {
+            await s3bucketBuffer(ownerData.aadhar_back, driver_id, '/aadharBack', '/owner', time, req.files.owneraadharBack.data).then((url) => {
                 console.log(url)
                 s3DataOwner.aadhar_back = url.Location
                     //   if (process.env.LIVE === 'true') {
@@ -406,7 +406,7 @@ exports.subAdminDriver = async function(req, res) {
 
             // test
             // fs.chmodSync(selfie, 0o755)
-            await s3bucketBuffer(ownerData.pan_card, req.body.driverId, '/panCard', '/owner', time, req.files.panCard.data).then((url) => {
+            await s3bucketBuffer(ownerData.pan_card, driver_id, '/panCard', '/owner', time, req.files.panCard.data).then((url) => {
                 console.log(url)
                 s3DataOwner.pan_card = url.Location
                     //   if (process.env.LIVE === 'true') {
@@ -427,7 +427,7 @@ exports.subAdminDriver = async function(req, res) {
 
             // test
             // fs.chmodSync(selfie, 0o755)
-            await s3bucketBuffer(ownerData.passbook, req.body.driverId, '/passbook', '/owner', time, req.files.passbook.data).then((url) => {
+            await s3bucketBuffer(ownerData.passbook, driver_id, '/passbook', '/owner', time, req.files.passbook.data).then((url) => {
                 console.log(url)
                 s3DataOwner.passbook = url.Location
                     //   if (process.env.LIVE === 'true') {
@@ -447,7 +447,7 @@ exports.subAdminDriver = async function(req, res) {
 
             // test
             // fs.chmodSync(selfie, 0o755)
-            await s3bucketBuffer(ownerData.rental_agreement1, req.body.driverId, '/rentalAgreement1', '/owner', time, req.files.rentalAgreement1.data).then((url) => {
+            await s3bucketBuffer(ownerData.rental_agreement1, driver_id, '/rentalAgreement1', '/owner', time, req.files.rentalAgreement1.data).then((url) => {
                 console.log(url)
                 s3DataOwner.rental_agreement1 = url.Location
                     //   if (process.env.LIVE === 'true') {
@@ -467,7 +467,7 @@ exports.subAdminDriver = async function(req, res) {
 
             // test
             // fs.chmodSync(selfie, 0o755)
-            await s3bucketBuffer(ownerData.rental_agreement2, req.body.driverId, '/rentalAgreement2', '/owner', time, req.files.rentalAgreement2.data).then((url) => {
+            await s3bucketBuffer(ownerData.rental_agreement2, driver_id, '/rentalAgreement2', '/owner', time, req.files.rentalAgreement2.data).then((url) => {
                 console.log(url)
                 s3DataOwner.rental_agreement2 = url.Location
                     //   if (process.env.LIVE === 'true') {
@@ -568,7 +568,7 @@ exports.subAdminDriver = async function(req, res) {
 
             // test
             // fs.chmodSync(selfie, 0o755)
-            await s3bucketBuffer(carData.front_image, req.body.driverId, '/frontImage', '/cars', time, req.files.frontImage.data).then((url) => {
+            await s3bucketBuffer(carData.front_image, driver_id, '/frontImage', '/cars', time, req.files.frontImage.data).then((url) => {
                 console.log(url)
                 s3DataCar.front_image = url.Location
                     //   if (process.env.LIVE === 'true') {
@@ -590,7 +590,7 @@ exports.subAdminDriver = async function(req, res) {
 
             // test
             // fs.chmodSync(selfie, 0o755)
-            await s3bucketBuffer(carData.chase_image, req.body.driverId, '/chaseNumber', '/cars', time, req.files.chaseNumber.data).then((url) => {
+            await s3bucketBuffer(carData.chase_image, driver_id, '/chaseNumber', '/cars', time, req.files.chaseNumber.data).then((url) => {
                 console.log(url)
                 s3DataCar.chase_image = url.Location
                     //   if (process.env.LIVE === 'true') {
@@ -613,7 +613,7 @@ exports.subAdminDriver = async function(req, res) {
 
             // test
             // fs.chmodSync(selfie, 0o755)
-            await s3bucketBuffer(carData.rc_front, req.body.driverId, '/rcFront', '/cars', time, req.files.rcFront.data).then((url) => {
+            await s3bucketBuffer(carData.rc_front, driver_id, '/rcFront', '/cars', time, req.files.rcFront.data).then((url) => {
                 console.log(url)
                 s3DataCar.rc_front = url.Location
                     //   if (process.env.LIVE === 'true') {
@@ -633,7 +633,7 @@ exports.subAdminDriver = async function(req, res) {
 
             // test
             // fs.chmodSync(selfie, 0o755)
-            await s3bucketBuffer(carData.rc_back, req.body.driverId, '/rcBack', '/cars', time, req.files.rcBack.data).then((url) => {
+            await s3bucketBuffer(carData.rc_back, driver_id, '/rcBack', '/cars', time, req.files.rcBack.data).then((url) => {
                 console.log(url)
                 s3DataCar.rc_back = url.Location
                     //   if (process.env.LIVE === 'true') {
@@ -653,7 +653,7 @@ exports.subAdminDriver = async function(req, res) {
 
             // test
             // fs.chmodSync(selfie, 0o755)
-            await s3bucketBuffer(carData.insurance, req.body.driverId, '/insurance', '/cars', time, req.files.insurance.data).then((url) => {
+            await s3bucketBuffer(carData.insurance, driver_id, '/insurance', '/cars', time, req.files.insurance.data).then((url) => {
                 console.log(url)
                 s3DataCar.insurance = url.Location
                     //   if (process.env.LIVE === 'true') {
@@ -673,7 +673,7 @@ exports.subAdminDriver = async function(req, res) {
 
             // test
             // fs.chmodSync(selfie, 0o755)
-            await s3bucketBuffer(carData.fc, req.body.driverId, '/fc', '/cars', time, req.files.fc.data).then((url) => {
+            await s3bucketBuffer(carData.fc, driver_id, '/fc', '/cars', time, req.files.fc.data).then((url) => {
                 console.log(url)
                 s3DataCar.fc = url.Location
                     //   if (process.env.LIVE === 'true') {
