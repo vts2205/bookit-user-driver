@@ -120,13 +120,13 @@ exports.subAdminDriver = async function(req, res) {
         }
 
 
-        var responseDriverDocuments = {
-            profile_pic: req.files.profileImage.data,
-            aadhar_back: req.files.aadharBack.data,
-            aadhar_front: req.files.aadharFront.data,
-            license_front: req.files.licenseFront.data,
-            license_back: req.files.licenseBack.data,
-        }
+        // var responseDriverDocuments = {
+        //     profile_pic: req.files.profileImage.data,
+        //     aadhar_back: req.files.aadharBack.data,
+        //     aadhar_front: req.files.aadharFront.data,
+        //     license_front: req.files.licenseFront.data,
+        //     license_back: req.files.licenseBack.data,
+        // }
 
 
         const Documents = await models.documents.findOne({
@@ -289,14 +289,14 @@ exports.subAdminDriver = async function(req, res) {
             rental_agreement2: process.env.ownerAgreement2 + driver_id + '_' + time + '.png',
         }
 
-        let responseOwnerData = {
-            aadhar_front: req.files.aadharFront.data,
-            aadhar_back: req.files.aadharBack.data,
-            pan_card: req.files.panCard.data,
-            passbook: req.files.passbook.data,
-            rental_agreement1: req.files.rentalAgreement1.data,
-            rental_agreement2: req.files.rentalAgreement2.data,
-        }
+        // let responseOwnerData = {
+        //     aadhar_front: req.files.aadharFront.data,
+        //     aadhar_back: req.files.aadharBack.data,
+        //     pan_card: req.files.panCard.data,
+        //     passbook: req.files.passbook.data,
+        //     rental_agreement1: req.files.rentalAgreement1.data,
+        //     rental_agreement2: req.files.rentalAgreement2.data,
+        // }
 
 
         const ownerDocuments = await models.owner.findOne({
@@ -332,26 +332,26 @@ exports.subAdminDriver = async function(req, res) {
             if (err) { return console.error(err) }
         })
 
-        if (req.files.passbook !== undefined) {
+        if (typeof req.files.passbook !== 'undefined') {
             fs.writeFileSync(ownerData.passbook, req.files.passbook.data, (err) => {
                 if (err) { return console.error(err) }
             })
         } else {
             data.passbook = null
         }
-        if (req.files.rentalAgreement1 !== undefined) {
+        if (typeof req.files.rentalAgreement1 !== 'undefined') {
             fs.writeFileSync(ownerData.rental_agreement1, req.files.rentalAgreement1.data, (err) => {
                 if (err) { return console.error(err) }
             })
         } else {
-            data.rental_agreement1 = null
+            s3DataOwner.rental_agreement1 = null
         }
-        if (req.files.rentalAgreement2 !== undefined) {
+        if (typeof req.files.rentalAgreement2 !== 'undefined') {
             fs.writeFileSync(ownerData.rental_agreement2, req.files.rentalAgreement2.data, (err) => {
                 if (err) { return console.error(err) }
             })
         } else {
-            data.rental_agreement2 = null
+            s3DataOwner.rental_agreement2 = null
         }
 
 
@@ -496,14 +496,14 @@ exports.subAdminDriver = async function(req, res) {
             fc: process.env.fcPath + driver_id + '_' + time + '.png',
         }
 
-        var responseCarData = {
-            front_image: req.files.frontImage.data,
-            chase_image: req.files.chaseNumber.data,
-            rc_front: req.files.rcFront.data,
-            rc_back: req.files.rcBack.data,
-            insurance: req.files.insurance.data,
-            fc: req.files.fc.data,
-        }
+        // var responseCarData = {
+        //     front_image: req.files.frontImage.data,
+        //     chase_image: req.files.chaseNumber.data,
+        //     rc_front: req.files.rcFront.data,
+        //     rc_back: req.files.rcBack.data,
+        //     insurance: req.files.insurance.data,
+        //     fc: req.files.fc.data,
+        // }
 
 
         const carDocument = await models.cars.findOne({
@@ -550,13 +550,13 @@ exports.subAdminDriver = async function(req, res) {
         fs.writeFileSync(carData.insurance, req.files.insurance.data, (err) => {
             if (err) { return console.error(err) }
         })
-        console.log(req.files.fc !== undefined)
+        console.log(typeof req.files.fc !== 'undefined')
         if (req.files.fc !== undefined) {
             fs.writeFileSync(carData.fc, req.files.fc.data, (err) => {
                 if (err) { return console.error(err) }
             })
         } else {
-            carData.fc = null
+            s3DataCar.fc = null
         }
 
 

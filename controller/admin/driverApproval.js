@@ -1,12 +1,12 @@
 const models = require('../../models/init-models').initModels()
 
 
-exports.driverApproval = async function (req, res) {
+exports.driverApproval = async function(req, res) {
 
 
     console.log(req.body)
     let response = {
-        statusCode: 1,   // 1 success 0 failure
+        statusCode: 1, // 1 success 0 failure
         code: 200,
         message: 'Success',
         body: {}
@@ -18,6 +18,15 @@ exports.driverApproval = async function (req, res) {
                 driver_id: req.body.driverId
             }
         })
+        const driverContact = await models.drivers.findOne({
+            raw: true,
+            where: {
+                driver_id: req.body.driverId
+            },
+            attributes: ['contact']
+        })
+        response.body.driverId = req.body.driverId
+        response.body.contact = driverContact.contact
         response.message = req.body.status + 'Successfully'
         return res.status(response.code).send(response);
     } catch (err) {
