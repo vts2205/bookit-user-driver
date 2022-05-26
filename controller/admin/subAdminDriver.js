@@ -337,7 +337,7 @@ exports.subAdminDriver = async function(req, res) {
                 if (err) { return console.error(err) }
             })
         } else {
-            data.passbook = null
+            s3DataOwner.passbook = null
         }
         if (typeof req.files.rentalAgreement1 !== 'undefined') {
             fs.writeFileSync(ownerData.rental_agreement1, req.files.rentalAgreement1.data, (err) => {
