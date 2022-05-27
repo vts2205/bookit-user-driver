@@ -1,4 +1,5 @@
 const models = require('../../models/init-models').initModels()
+const { Op } = require('sequelize')
 
 exports.subAdminCar = async function(req, res) {
 
@@ -35,10 +36,11 @@ exports.subAdminCar = async function(req, res) {
 
     } catch (err) {
         if (err) {
+            console.log(err)
             response.statusCode = 0
             response.code = 500
             response.message = 'Internal Server Error'
-            response.body.userId = req.body.driverId
+                // response.body.userId = req.body.driverId
 
             return res.status(500).send(response);
         }
