@@ -4,6 +4,7 @@ var getToken = require('../../middlewares/create_token')
 const moment = require('moment')
 const fs = require('fs')
 const { s3bucketBuffer } = require('../../common/s3bucketBuffer1')
+const { Op } = require('sequelize')
 
 
 
@@ -61,7 +62,10 @@ exports.subAdminDriver = async function(req, res) {
         const register = await models.drivers.findOne({
             raw: true,
             where: {
-                contact: req.body.contact
+                contact: req.body.contact,
+                driver_status: {
+                    [Op.ne]: 'rejected'
+                }
             }
         })
         console.log(register)

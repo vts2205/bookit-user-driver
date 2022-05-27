@@ -1,40 +1,46 @@
 const models = require('../../models/init-models').initModels()
 var newOTP = require('otp-generators')
 var getToken = require('../../middlewares/create_token')
+const { Op } = require('sequelize')
 
 
-exports.registerDriver = async function (req, res) {
+exports.registerDriver = async function(req, res) {
     console.log('driver register')
     console.log(req.body)
     let driver_id = ''
 
     let response = {
-        statusCode: 1,   // 1 success 0 failure
+        statusCode: 1, // 1 success 0 failure
         code: 200,
         message: 'Success',
-        body:{}
+        body: {}
     }
 
     try {
         const register = await models.drivers.findOne({
             raw: true,
             where: {
-                contact: req.body.contact
+                contact: req.body.contact,
+                driver_status: {
+                    [Op.ne]: 'rejected'
+                }
             }
         })
         console.log(register)
 
         if (register !== null) {
-           response.message = 'Driver Already Exists'
-           response.body={}
-           return res.status(200).send(response);
+            response.message = 'Driver Already Exists'
+            response.body = {}
+            return res.status(200).send(response);
         }
 
         if (register === null) {
             var driverId = await models.drivers.findOne({
                 raw: true,
                 attributes: ['driver_id'],
-                order: [['id', 'DESC']]
+                order: [
+                    ['id', 'DESC']
+                ]
             })
             console.log(driverId)
             if (driverId === null) {
@@ -48,15 +54,15 @@ exports.registerDriver = async function (req, res) {
                     location: req.body.location,
                     email: req.body.email,
                     contact: req.body.contact,
-                   // password: req.body.password,
-                   //fcm_token: req.body.fcmToken,
+                    // password: req.body.password,
+                    //fcm_token: req.body.fcmToken,
                     password: 'raja',
                     fcm_token: null,
-                    driver_status : 'pending',
-                    license_number : req.body.licensenumber,
-                    expiry_date :  req.body.expirydate,
-                    rental_type : '1',
-                    referral:newOTP.generate(8, { alphabets: true, upperCase: true, specialChar: true }),
+                    driver_status: 'pending',
+                    license_number: req.body.licensenumber,
+                    expiry_date: req.body.expirydate,
+                    rental_type: '1',
+                    referral: newOTP.generate(8, { alphabets: true, upperCase: true, specialChar: true }),
 
                 })
                 console.log('++++++++ Enters If Condition ++++++++++')
@@ -70,9 +76,9 @@ exports.registerDriver = async function (req, res) {
                 let number = (parseInt(data[1].toString()));
                 console.log(number++)
                 driver_id = 'driver_' + number++
-                console.log(driver_id)
+                    console.log(driver_id)
 
-               
+
                 await models.drivers.create({
                     driver_id: driver_id,
                     name: req.body.name,
@@ -83,19 +89,19 @@ exports.registerDriver = async function (req, res) {
                     contact: req.body.contact,
                     password: 'raja',
                     fcm_token: req.body.fcmToken,
-                    driver_status : 'pending',
-                    license_number : req.body.licensenumber,
-                    expiry_date :  req.body.expirydate,
-                    rental_type : '1',
-                    referral:newOTP.generate(8, { alphabets: true, upperCase: true, specialChar: true }),
+                    driver_status: 'pending',
+                    license_number: req.body.licensenumber,
+                    expiry_date: req.body.expirydate,
+                    rental_type: '1',
+                    referral: newOTP.generate(8, { alphabets: true, upperCase: true, specialChar: true }),
                 })
             }
 
             let payload = {
-                contact : req.body.contact
+                contact: req.body.contact
             }
 
-          response.body.Token = 'Bearer '+getToken.getToken(payload, process.env.ACCESS_KEY)
+            response.body.Token = 'Bearer ' + getToken.getToken(payload, process.env.ACCESS_KEY)
 
             response.message = 'Driver Created Successfully'
             response.body.driverId = driver_id
@@ -106,7 +112,7 @@ exports.registerDriver = async function (req, res) {
         if (err) {
             response.statusCode = 0
             response.code = 500
-            response.message = 'Internal Server Error'            
+            response.message = 'Internal Server Error'
         }
         return res.status(500).send(response);
     }

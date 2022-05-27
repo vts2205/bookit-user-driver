@@ -1,32 +1,32 @@
 const models = require('../../models/init-models').initModels()
 
-exports.subAdminCar = async function (req, res) {
+exports.subAdminCar = async function(req, res) {
 
     console.log(req)
     let response = {
-        statusCode: 1,   // 1 success 0 failure
+        statusCode: 1, // 1 success 0 failure
         code: 200,
         message: 'Success'
     }
     try {
 
-        const carData = await models.cars.findOne({
+        const carData = await models.cars.findAll({
             raw: true,
-            where: {
-                driver_id: req.body.driverId
-            }
+            attributes: ['front_image', 'chase_image', 'rc_front', 'rc_back', 'insurance', 'fc'],
+            include: [{
+                model: models.drivers,
+                as: 'driver',
+                attributes: ['name', 'contact', 'driver_id'],
+                where: {
+                    driver_status: {
+                        [Op.eq]: 'confirmed'
+                    }
+                }
+            }]
         })
 
-        if (carData !== null) {
-            response.body= {
-                driverId: req.body.driver_id,
-                frontImage: new ArrayBuffer(carData.front_image),
-                ChaseImage: new ArrayBuffer(carData.chase_number),
-                rcFront: new ArrayBuffer(carData.rc_front),
-                rcback: new ArrayBuffer(carData.rc_back),
-                insurance: new ArrayBuffer(carData.insurance),
-                fc: carData.fc !== null ? new ArrayBuffer(carData.fc): 'N/A'
-        }
+        if (carData.length > 0) {
+            response.body = carData
         } else {
             response.message = 'No Data found'
         }

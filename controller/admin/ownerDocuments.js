@@ -1,32 +1,32 @@
 const models = require('../../models/init-models').initModels()
 
-exports.subAdminOwner = async function (req, res) {
+exports.subAdminOwner = async function(req, res) {
 
     console.log(req)
     let response = {
-        statusCode: 1,   // 1 success 0 failure
+        statusCode: 1, // 1 success 0 failure
         code: 200,
         message: 'Success'
     }
     try {
 
-        const ownerData = await models.owner.findOne({
+        const ownerData = await models.owner.findAll({
             raw: true,
-            where: {
-                driver_id: req.body.driverId
-            }
+            attributes: ['aadhar_front', 'aadhar_back', 'pan_card', 'passbook', 'rental_agreement1', 'rental_agreement2'],
+            include: [{
+                model: models.drivers,
+                as: 'driver_driver',
+                attributes: ['name', 'contact', 'driver_id'],
+                where: {
+                    driver_status: {
+                        [Op.eq]: 'confirmed'
+                    }
+                }
+            }]
         })
 
-        if (ownerData !== null) {
-            response.body= {
-                driverId: req.body.driver_id,
-                aadharFront: new ArrayBuffer(ownerData.aadhar_front),
-                aadharback: new ArrayBuffer(ownerData.aadhar_back),
-                panCard: new ArrayBuffer(ownerData.pan_card),
-                passbook: new ArrayBuffer(ownerData.passbook),
-                rentalAgreement1: new ArrayBuffer(ownerData.rental_agreement1),
-                rentalAgreement2: new ArrayBuffer(ownerData.rental_agreement2),
-        }
+        if (ownerData.length > 0) {
+            response.body = ownerData
         } else {
             response.message = 'No Data found'
         }
