@@ -8,6 +8,10 @@ const addDriverController = require('../controller/admin/addDriver')
 const driverApprovalController = require('../controller/admin/driverApproval')
 const approvedListController = require('../controller/admin/approvedList')
 const rejectedListController = require('../controller/admin/rejectedDrivers')
+    // const rejectedListController = require('../controller/admin/rejectedDrivers')
+const rejectedExcelController = require('../controller/admin/exportRejectedExcel')
+const pendingExcelController = require('../controller/admin/exportPendingList')
+const confirmedExcelController = require('../controller/admin/exportConfirmedList')
 
 
 
@@ -22,6 +26,11 @@ router.get('/addDriver', addDriverController.addDriver)
 router.post('/driverApproval', driverApprovalController.driverApproval)
 router.get('/approvedList', approvedListController.approvedList)
 router.get('/rejectedList', rejectedListController.rejectedList)
+
+router.get('/rejectedExcel', rejectedExcelController.rejectedList)
+router.get('/pendingExcel', pendingExcelController.pendingList)
+router.get('/confirmedExcel', confirmedExcelController.confirmedList)
+
 
 
 
