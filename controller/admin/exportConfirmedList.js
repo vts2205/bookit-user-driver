@@ -1,5 +1,6 @@
 const models = require('../../models/init-models').initModels()
 const excel = require('excel4node')
+const fs = require('fs')
 
 exports.confirmedList = async function(req, res) {
 
@@ -113,6 +114,7 @@ exports.confirmedList = async function(req, res) {
 
     } catch (err) {
         if (err) {
+            console.log(err)
             response.statusCode = 0
             response.code = 500
             response.message = 'Internal Server Error'
@@ -150,8 +152,7 @@ async function updateDriversCell(index, object, data) {
             .string(data[7])
         object.cell(index, 9)
             .string(data[8])
-        object.cell(index, 10)
-            .string(data[9])
+
 
     } else {
         object.cell(index, 1)

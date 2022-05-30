@@ -150,8 +150,7 @@ async function updateDriversCell(index, object, data) {
             .string(data[7])
         object.cell(index, 9)
             .string(data[8])
-        object.cell(index, 10)
-            .string(data[9])
+
 
     } else {
         object.cell(index, 1)
