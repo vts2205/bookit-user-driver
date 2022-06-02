@@ -25,7 +25,7 @@ exports.addDriver = async function(req, res) {
             order: [
                 ['id', 'DESC']
             ],
-            attributes: ['created_at'],
+            // attributes: ['created_at'],
             include: [{
                 model: models.documents,
                 as: 'document_document',
