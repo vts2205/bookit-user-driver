@@ -13,7 +13,7 @@ exports.driverApproval = async function(req, res) {
     }
 
     try {
-        let approval = await models.drivers.update({ driver_status: req.body.status }, {
+        let approval = await models.drivers.update({ driver_status: req.body.status, updated_at: moment() }, {
             where: {
                 driver_id: req.body.driverId
             }

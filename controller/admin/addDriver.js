@@ -1,14 +1,15 @@
 const models = require('../../models/init-models').initModels()
 const fs = require('fs')
+const moment = require('moment')
 
 
 
-exports.addDriver = async function (req, res) {
+exports.addDriver = async function(req, res) {
 
     console.log(req.body)
 
     let response = {
-        statusCode: 1,   // 1 success 0 failure
+        statusCode: 1, // 1 success 0 failure
         code: 200,
         message: 'Success'
     }
@@ -21,6 +22,10 @@ exports.addDriver = async function (req, res) {
             where: {
                 driver_status: 'pending'
             },
+            order: [
+                ['id', 'DESC']
+            ],
+            attributes: ['created_at'],
             include: [{
                 model: models.documents,
                 as: 'document_document',
@@ -212,6 +217,12 @@ exports.addDriver = async function (req, res) {
         //     }
         // }
 
+        const addDriver = []
+
+
+        for (const element of driverData) {
+            element.createdAt_local = moment(element.created_at).local().format('DD-MM-YYYY h:mm:ss a')
+        }
 
         response.body = driverData
 
@@ -224,8 +235,7 @@ exports.addDriver = async function (req, res) {
             response.statusCode = 0
             response.code = 500
             response.message = 'Internal Server Error'
-            response.body = {
-            }
+            response.body = {}
         }
         return res.status(response.code).send(response)
     }

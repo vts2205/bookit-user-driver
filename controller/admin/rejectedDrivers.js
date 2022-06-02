@@ -1,4 +1,6 @@
 const models = require('../../models/init-models').initModels()
+const moment = require('moment')
+
 
 exports.rejectedList = async function(req, res) {
 
@@ -15,10 +17,15 @@ exports.rejectedList = async function(req, res) {
             where: {
                 driver_status: 'rejected'
             },
-            attributes: ['name', 'driver_id', 'contact', 'owner_name', 'owner_number', 'location', 'license_number', 'expiry_date', 'referral'],
+            attributes: ['name', 'driver_id', 'contact', 'owner_name', 'owner_number', 'location', 'license_number', 'expiry_date', 'referral', 'created_at', 'updated_at'],
 
         })
-        console.log(rejectedDrivers)
+        cconsole.log(rejectedDrivers)
+        for (const element of rejectedDrivers) {
+            element.createdAt_local = moment(element.created_at).local().format('DD-MM-YYYY h:mm:ss a')
+            element.updatedAt_local = moment(element.updated_at).local().format('DD-MM-YYYY h:mm:ss a')
+
+        }
         response.body.approvedDrivers = rejectedDrivers
 
         return res.status(response.code).send(response);
