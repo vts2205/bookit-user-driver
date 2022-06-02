@@ -20,7 +20,7 @@ exports.rejectedList = async function(req, res) {
             attributes: ['name', 'driver_id', 'contact', 'owner_name', 'owner_number', 'location', 'license_number', 'expiry_date', 'referral', 'created_at', 'updated_at'],
 
         })
-        cconsole.log(rejectedDrivers)
+        console.log(rejectedDrivers)
         for (const element of rejectedDrivers) {
             element.createdAt_local = moment(element.created_at).local().format('DD-MM-YYYY h:mm:ss a')
             element.updatedAt_local = moment(element.updated_at).local().format('DD-MM-YYYY h:mm:ss a')
