@@ -14,7 +14,9 @@ exports.driverApproval = async function(req, res) {
     }
 
     try {
-        let approval = await models.drivers.update({ driver_status: req.body.status, updated_at: moment() }, {
+        let json = { driver_status: req.body.status, updated_at: moment().utc() }
+        console.log(json)
+        let approval = await models.drivers.update(json, {
             where: {
                 driver_id: req.body.driverId
             }
