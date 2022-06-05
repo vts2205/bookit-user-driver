@@ -1,4 +1,5 @@
 const models = require('../../models/init-models').initModels()
+const moment = require('moment')
 
 
 exports.driverApproval = async function(req, res) {
@@ -18,6 +19,7 @@ exports.driverApproval = async function(req, res) {
                 driver_id: req.body.driverId
             }
         })
+        console.log(approval)
         const driverContact = await models.drivers.findOne({
             raw: true,
             where: {
