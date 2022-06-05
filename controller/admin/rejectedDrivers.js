@@ -25,7 +25,7 @@ exports.rejectedList = async function(req, res) {
             // const utc = moment(element.created_at).utc()
             // element.createdAt_local = moment(utc).format('DD-MM-YYYY h:mm:ss a')
             // element.updatedAt_local = moment(element.updated_at).format('DD-MM-YYYY h:mm:ss a')
-            element.createdAt_local = moment(element.created_at).utcOffset("+05:30", true).format('DD-MM-YYYY h:mm:ss a')
+            element.createdAt_local = moment(element.created_at).utcOffset("+05:30").format('DD-MM-YYYY h:mm:ss a')
 
         }
         response.body.approvedDrivers = rejectedDrivers
