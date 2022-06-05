@@ -221,7 +221,7 @@ exports.addDriver = async function(req, res) {
 
 
         for (const element of driverData) {
-            element.createdAt_local = moment(element.created_at).local().format('DD-MM-YYYY h:mm:ss a')
+            element.createdAt_local = moment(element.created_at).format('DD-MM-YYYY h:mm:ss a')
         }
 
         response.body = driverData

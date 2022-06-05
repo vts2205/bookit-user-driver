@@ -22,8 +22,8 @@ exports.rejectedList = async function(req, res) {
         })
         console.log(rejectedDrivers)
         for (const element of rejectedDrivers) {
-            element.createdAt_local = moment(element.created_at).local().format('DD-MM-YYYY h:mm:ss a')
-            element.updatedAt_local = moment(element.updated_at).local().format('DD-MM-YYYY h:mm:ss a')
+            element.createdAt_local = moment(element.created_at).format('DD-MM-YYYY h:mm:ss a')
+            element.updatedAt_local = moment(element.updated_at).format('DD-MM-YYYY h:mm:ss a')
 
         }
         response.body.approvedDrivers = rejectedDrivers
