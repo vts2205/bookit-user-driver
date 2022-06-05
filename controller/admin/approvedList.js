@@ -20,8 +20,8 @@ exports.approvedList = async function(req, res) {
 
         })
         for (const element of approvedDrivers) {
-            element.createdAt_local = moment(element.created_at).format('DD-MM-YYYY h:mm:ss a')
-            element.updatedAt_local = moment(element.updated_at).format('DD-MM-YYYY h:mm:ss a')
+            element.createdAt_local = moment(element.created_at).utcOffset("+05:30").format('DD-MM-YYYY h:mm:ss a')
+            element.updatedAt_local = moment(element.updated_at).utcOffset("+05:30").format('DD-MM-YYYY h:mm:ss a')
 
         }
         response.body.approvedDrivers = approvedDrivers
