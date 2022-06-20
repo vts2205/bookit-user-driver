@@ -17,11 +17,13 @@ exports.approvedList = async function(req, res) {
                 driver_status: 'confirmed'
             },
             attributes: ['name', 'driver_id', 'created_at', 'updated_at', 'contact', 'owner_name', 'owner_number', 'location', 'license_number', 'expiry_date', 'referral'],
-
+            order: [
+                ['updated_at', 'DESC']
+            ]
         })
         for (const element of approvedDrivers) {
-            element.createdAt_local = moment(element.created_at).utcOffset("+05:30").format('DD-MM-YYYY h:mm:ss a')
-            element.updatedAt_local = moment(element.updated_at).utcOffset("+05:30").format('DD-MM-YYYY h:mm:ss a')
+            element.createdAt_local = moment(element.created_at).local().format('DD-MM-YYYY h:mm:ss a')
+            element.updatedAt_local = moment(element.updated_at).local().format('DD-MM-YYYY h:mm:ss a')
 
         }
         response.body.approvedDrivers = approvedDrivers

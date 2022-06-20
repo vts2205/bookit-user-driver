@@ -14,14 +14,11 @@ exports.driverApproval = async function(req, res) {
     }
 
     try {
-        let json = { driver_status: req.body.status, updated_at: moment().utc() }
-        console.log(json)
-        let approval = await models.drivers.update(json, {
+        let approval = await models.drivers.update({ driver_status: req.body.status, updated_at: moment(), reason: req.body.reason }, {
             where: {
                 driver_id: req.body.driverId
             }
         })
-        console.log(approval)
         const driverContact = await models.drivers.findOne({
             raw: true,
             where: {
@@ -34,6 +31,7 @@ exports.driverApproval = async function(req, res) {
         response.message = req.body.status + 'Successfully'
         return res.status(response.code).send(response);
     } catch (err) {
+        console.log(err)
         if (err) {
             response.statusCode = 0
             response.code = 500

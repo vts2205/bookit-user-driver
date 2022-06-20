@@ -12,9 +12,7 @@ const rejectedListController = require('../controller/admin/rejectedDrivers')
 const rejectedExcelController = require('../controller/admin/exportRejectedExcel')
 const pendingExcelController = require('../controller/admin/exportPendingList')
 const confirmedExcelController = require('../controller/admin/exportConfirmedList')
-
-
-
+const searchController = require('../controller/drivers/seach')
 
 
 
@@ -30,6 +28,7 @@ router.get('/rejectedList', rejectedListController.rejectedList)
 router.get('/rejectedExcel', rejectedExcelController.rejectedList)
 router.get('/pendingExcel', pendingExcelController.pendingList)
 router.get('/confirmedExcel', confirmedExcelController.confirmedList)
+router.get('/search', searchController.search)
 
 
 
