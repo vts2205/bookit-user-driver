@@ -1,7 +1,7 @@
 const models = require('../../models/init-models').initModels()
 const excel = require('excel4node')
 const fs = require('fs')
-const { Op } = require('Sequelize')
+const { Op } = require('sequelize')
 const moment = require('moment')
 
 
