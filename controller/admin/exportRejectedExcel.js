@@ -72,8 +72,8 @@ exports.rejectedList = async function(req, res) {
             'License Number',
             'Expiry Date',
             'Referral Code',
-            'Created at',
-            'Updated At'
+            'In Time',
+            'Rejected Time'
         ]
         const ownerColumnNames = [
             'Driver Id',
@@ -199,9 +199,9 @@ async function updateDriversCell(index, object, data) {
         object.cell(index, 9)
             .string(data.referral === null ? 'null' : data.referral)
         object.cell(index, 10)
-            .string(data.created_at === null ? 'null' : data.created_at)
+            .string(data.created_at === null ? 'null' : moment(data.created_at).format('ll HH:mm:ss a').toString())
         object.cell(index, 11)
-            .string(data.updated_at === null ? 'null' : data.updated_at)
+            .string(data.updated_at === null ? 'null' : moment(data.updated_at).format('ll HH:mm:ss a').toString())
     }
 }
 
@@ -246,9 +246,9 @@ async function updateOwnerCell(index, object, data) {
         object.cell(index, 7)
             .string(data.rental_agreement2 === null ? 'null' : data.rental_agreement2)
         object.cell(index, 8)
-            .string(data.created_at === null ? 'null' : data.created_at)
+            .string(data.created_at === null ? 'null' : moment(data.created_at).format('ll HH:mm:ss a').toString())
         object.cell(index, 9)
-            .string(data.updated_at === null ? 'null' : data.updated_at)
+            .string(data.updated_at === null ? 'null' : moment(data.updated_at).format('ll HH:mm:ss a').toString())
 
     }
 }
@@ -292,9 +292,9 @@ async function updateDocumentsCell(index, object, data) {
         object.cell(index, 6)
             .string(data.license_back === null ? 'null' : data.license_back)
         object.cell(index, 7)
-            .string(data.created_at === null ? 'null' : data.created_at)
+            .string(data.created_at === null ? 'null' : moment(data.created_at).format('ll HH:mm:ss a').toString())
         object.cell(index, 8)
-            .string(data.updated_at === null ? 'null' : data.updated_at)
+            .string(data.updated_at === null ? 'null' : moment(data.updated_at).format('ll HH:mm:ss a').toString())
     }
 }
 
@@ -340,8 +340,8 @@ async function updateCarCell(index, object, data) {
         object.cell(index, 7)
             .string(data.fc === null ? 'null' : data.fc)
         object.cell(index, 8)
-            .string(data.created_at === null ? 'null' : data.created_at)
+            .string(data.created_at === null ? 'null' : moment(data.created_at).format('ll HH:mm:ss a').toString())
         object.cell(index, 9)
-            .string(data.updated_at === null ? 'null' : data.updated_at)
+            .string(data.updated_at === null ? 'null' : moment(data.updated_at).format('ll HH:mm:ss a').toString())
     }
 }
