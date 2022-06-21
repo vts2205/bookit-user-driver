@@ -24,7 +24,6 @@ router.get('/addDriver', addDriverController.addDriver)
 router.post('/driverApproval', driverApprovalController.driverApproval)
 router.get('/approvedList', approvedListController.approvedList)
 router.get('/rejectedList', rejectedListController.rejectedList)
-
 router.get('/rejectedExcel', rejectedExcelController.rejectedList)
 router.get('/pendingExcel', pendingExcelController.pendingList)
 router.get('/confirmedExcel', confirmedExcelController.confirmedList)

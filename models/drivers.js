@@ -106,6 +106,11 @@ module.exports = function(sequelize, DataTypes) {
             allowNull: true,
 
         },
+        created_by: {
+            type: DataTypes.STRING(255),
+            allowNull: true,
+            defaultValue: 'driver'
+        },
         created_at: {
             type: DataTypes.DATE,
             allowNull: false,

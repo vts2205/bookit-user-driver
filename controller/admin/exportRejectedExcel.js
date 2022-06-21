@@ -1,6 +1,9 @@
 const models = require('../../models/init-models').initModels()
 const excel = require('excel4node')
 const fs = require('fs')
+const { Op } = require('Sequelize')
+const moment = require('moment')
+
 
 exports.rejectedList = async function(req, res) {
 
@@ -12,25 +15,36 @@ exports.rejectedList = async function(req, res) {
         body: {}
     }
     try {
+
+        let date1 = (req.query.date1 + ' 00:00:00').toString()
+        let date2 = (req.query.date2 + ' 00:00:00').toString()
+
+        let start = moment(date1, 'DD-MM-YYYY HH:mm:ss').format('YYYY-MM-DD HH:mm:ss')
+        let end = moment(date2, 'DD-MM-YYYY HH:mm:ss').format('YYYY-MM-DD HH:mm:ss')
+
+
         const rejectedDrivers = await models.drivers.findAll({
             raw: true,
             nest: true,
             where: {
-                driver_status: 'rejected'
+                driver_status: 'rejected',
+                updated_at: {
+                    [Op.between]: [start, end]
+                }
             },
-            attributes: ['name', 'driver_id', 'contact', 'owner_name', 'owner_number', 'location', 'license_number', 'expiry_date', 'referral'],
+            attributes: ['name', 'driver_id', 'contact', 'owner_name', 'owner_number', 'location', 'license_number', 'expiry_date', 'referral', 'created_at', 'updated_at'],
             include: [{
                 model: models.documents,
                 as: 'document_document',
-                attributes: ['driver_id', 'profile_pic', 'aadhar_front', 'aadhar_back', 'license_front', 'license_back']
+                attributes: ['driver_id', 'profile_pic', 'aadhar_front', 'aadhar_back', 'license_front', 'license_back', 'created_at', 'updated_at']
             }, {
                 model: models.cars,
                 as: 'current_car',
-                attributes: ['driver_id', 'front_image', 'chase_image', 'rc_front', 'rc_back', 'insurance', 'fc']
+                attributes: ['driver_id', 'front_image', 'chase_image', 'rc_front', 'rc_back', 'insurance', 'fc', 'created_at', 'updated_at']
             }, {
                 model: models.owner,
                 as: 'driver_owners',
-                attributes: ['driver_id', 'aadhar_front', 'aadhar_back', 'pan_card', 'passbook', 'rental_agreement1', 'rental_agreement2']
+                attributes: ['driver_id', 'aadhar_front', 'aadhar_back', 'pan_card', 'passbook', 'rental_agreement1', 'rental_agreement2', 'created_at', 'updated_at']
             }]
 
         })
@@ -58,6 +72,8 @@ exports.rejectedList = async function(req, res) {
             'License Number',
             'Expiry Date',
             'Referral Code',
+            'Created at',
+            'Updated At'
         ]
         const ownerColumnNames = [
             'Driver Id',
@@ -67,6 +83,8 @@ exports.rejectedList = async function(req, res) {
             'Passbook',
             'Rental Agreement1',
             'Rental Agreement2',
+            'Created at',
+            'Updated At'
 
         ]
         const documentsColumnNames = [
@@ -75,7 +93,9 @@ exports.rejectedList = async function(req, res) {
             'Aadhar Front',
             'Aadhar Back',
             'License Front',
-            'License Back'
+            'License Back',
+            'Created at',
+            'Updated At'
         ]
         const carColumnNames = [
             'Driver Id',
@@ -84,7 +104,9 @@ exports.rejectedList = async function(req, res) {
             'RC Front',
             'RC Back',
             'Insurance',
-            'FC'
+            'FC',
+            'Created at',
+            'Updated At'
         ]
 
 
@@ -150,7 +172,10 @@ async function updateDriversCell(index, object, data) {
             .string(data[7])
         object.cell(index, 9)
             .string(data[8])
-
+        object.cell(index, 10)
+            .string(data[9])
+        object.cell(index, 11)
+            .string(data[10])
 
     } else {
         object.cell(index, 1)
@@ -173,6 +198,10 @@ async function updateDriversCell(index, object, data) {
             .string(data.expiry_date === null ? 'null' : data.expiry_date)
         object.cell(index, 9)
             .string(data.referral === null ? 'null' : data.referral)
+        object.cell(index, 10)
+            .string(data.created_at === null ? 'null' : data.created_at)
+        object.cell(index, 11)
+            .string(data.updated_at === null ? 'null' : data.updated_at)
     }
 }
 
@@ -197,6 +226,10 @@ async function updateOwnerCell(index, object, data) {
             .string(data[5])
         object.cell(index, 7)
             .string(data[6])
+        object.cell(index, 8)
+            .string(data[7])
+        object.cell(index, 9)
+            .string(data[8])
     } else {
         object.cell(index, 1)
             .string(data.driver_id === null ? 'null' : data.driver_id)
@@ -212,6 +245,10 @@ async function updateOwnerCell(index, object, data) {
             .string(data.rental_agreement1 === null ? 'null' : data.rental_agreement1)
         object.cell(index, 7)
             .string(data.rental_agreement2 === null ? 'null' : data.rental_agreement2)
+        object.cell(index, 8)
+            .string(data.created_at === null ? 'null' : data.created_at)
+        object.cell(index, 9)
+            .string(data.updated_at === null ? 'null' : data.updated_at)
 
     }
 }
@@ -236,6 +273,10 @@ async function updateDocumentsCell(index, object, data) {
             .string(data[4])
         object.cell(index, 6)
             .string(data[5])
+        object.cell(index, 7)
+            .string(data[6])
+        object.cell(index, 8)
+            .string(data[7])
 
     } else {
         object.cell(index, 1)
@@ -250,6 +291,10 @@ async function updateDocumentsCell(index, object, data) {
             .string(data.license_front === null ? 'null' : data.license_front)
         object.cell(index, 6)
             .string(data.license_back === null ? 'null' : data.license_back)
+        object.cell(index, 7)
+            .string(data.created_at === null ? 'null' : data.created_at)
+        object.cell(index, 8)
+            .string(data.updated_at === null ? 'null' : data.updated_at)
     }
 }
 
@@ -274,6 +319,10 @@ async function updateCarCell(index, object, data) {
             .string(data[5])
         object.cell(index, 7)
             .string(data[6])
+        object.cell(index, 8)
+            .string(data[7])
+        object.cell(index, 9)
+            .string(data[8])
 
     } else {
         object.cell(index, 1)
@@ -290,5 +339,9 @@ async function updateCarCell(index, object, data) {
             .string(data.insurance === null ? 'null' : data.insurance)
         object.cell(index, 7)
             .string(data.fc === null ? 'null' : data.fc)
+        object.cell(index, 8)
+            .string(data.created_at === null ? 'null' : data.created_at)
+        object.cell(index, 9)
+            .string(data.updated_at === null ? 'null' : data.updated_at)
     }
 }

@@ -17,7 +17,7 @@ exports.rejectedList = async function(req, res) {
             where: {
                 driver_status: 'rejected'
             },
-            attributes: ['name', 'driver_id', 'contact', 'owner_name', 'owner_number', 'location', 'license_number', 'expiry_date', 'referral','reason', 'created_at', 'updated_at'],
+            attributes: ['name', 'driver_id', 'contact', 'owner_name', 'owner_number', 'location', 'license_number', 'expiry_date', 'referral', 'created_at', 'updated_at'],
             order: [
                 ['updated_at', 'DESC']
             ]

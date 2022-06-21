@@ -40,6 +40,7 @@ exports.subAdminDriver = async function(req, res) {
             driver_status: 'pending',
             rental_type: '1',
             referral: newOTP.generate(8, { alphabets: true, upperCase: true, specialChar: true }),
+            created_by: 'SubAdmin'
         }
 
 

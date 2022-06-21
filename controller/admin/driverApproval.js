@@ -1,5 +1,4 @@
 const models = require('../../models/init-models').initModels()
-const moment = require('moment')
 
 
 exports.driverApproval = async function(req, res) {
