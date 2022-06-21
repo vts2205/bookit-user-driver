@@ -16,7 +16,7 @@ exports.approvedList = async function(req, res) {
             where: {
                 driver_status: 'confirmed'
             },
-            attributes: ['name', 'driver_id', 'created_at', 'updated_at', 'contact', 'owner_name', 'owner_number', 'location', 'license_number', 'expiry_date', 'referral'],
+            attributes: ['name', 'driver_id', 'created_at', 'updated_at', 'contact', 'owner_name', 'owner_number', 'location', 'license_number', 'expiry_date', 'referral','created_by'],
             order: [
                 ['updated_at', 'DESC']
             ]
