@@ -30,7 +30,7 @@ exports.confirmedList = async function(req, res) {
                     [Op.between]: [start, end]
                 }
             },
-            attributes: ['name', 'driver_id', 'contact', 'owner_name', 'owner_number', 'location', 'license_number', 'expiry_date', 'referral', 'created_at', 'updated_at'],
+            attributes: ['name', 'driver_id', 'contact', 'owner_name', 'owner_number', 'location', 'license_number', 'expiry_date', 'referral', 'created_at', 'updated_at','created_by'],
             include: [{
                 model: models.documents,
                 as: 'document_document',
@@ -71,7 +71,8 @@ exports.confirmedList = async function(req, res) {
             'Expiry Date',
             'Referral Code',
             'Created At',
-            'Updated At'
+            'Updated At',
+            'Created By'
         ]
         const ownerColumnNames = [
             'Driver Id',
@@ -176,6 +177,8 @@ async function updateDriversCell(index, object, data) {
             .string(data[9])
         object.cell(index, 11)
             .string(data[10])
+            object.cell(index, 12)
+            .string(data[11])
 
 
     } else {
@@ -203,6 +206,8 @@ async function updateDriversCell(index, object, data) {
             .string(data.created_at === null ? 'null' : moment(data.created_at).format('ll HH:mm:ss a').toString())
         object.cell(index, 11)
             .string(data.updated_at === null ? 'null' : moment(data.updated_at).format('ll HH:mm:ss a').toString())
+            object.cell(index, 12)
+            .string(data.created_by === null ? 'null' : data.created_by)
     }
 }
 
