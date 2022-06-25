@@ -14,11 +14,11 @@ exports.getalluserdata = async function (req, res) {
 
     try {
 
-        response.body.userId = req.body.userId
+        response.body.userId = req.query.userId
         const getuserdata = await models.users.findOne({
             raw: true,
             where: {
-                user_id: req.body.userId
+                user_id: req.query.userId
             },
             attributes: ['name', 'email', 'contact', 'gender', 'dob', 'wallet', 'user_id']
         })
@@ -32,10 +32,11 @@ exports.getalluserdata = async function (req, res) {
         return res.status(200).send(response);
     } catch (err) {
         if (err) {
+            console.log(err)
             response.statusCode = 0
             response.code = 500
             response.message = 'Internal Server Error'
-            response.body.userId = req.body.userId
+            response.body.userId = req.query.userId
             
 
             return res.status(500).send(response);

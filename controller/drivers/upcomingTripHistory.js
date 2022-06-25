@@ -1,6 +1,7 @@
 const models = require('../../models/init-models').initModels()
 
 exports.tripHistoryUpcoming = async function(req,res) {
+    console.log('upcomingtriphistory')
     console.log(req.query)
 
     try{

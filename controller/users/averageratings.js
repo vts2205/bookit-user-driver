@@ -8,12 +8,12 @@ exports.averagratingscal = async function (req, res) {
 
     try {
         console.log('+++++++++ Average Ratings by User +++++++++++')
-        console.log(req.body)
+        console.log(req.query)
         const countData = await models.carShifts.findAll({
             raw: true,
             // nest: true,
             where: {
-                driver_id: req.body.driverId
+                driver_id: req.query.driverId
             },
             attributes :[ [Sequelize.fn('COUNT', 'driver_rating'), 'ratings'],[Sequelize.fn('SUM', Sequelize.col('driver_rating')), 'sums']],
             // attributes :[[Sequelize.literal(Sequelize.fn('COUNT', 'ratings'),'/',Sequelize.fn('SUM', Sequelize.col('ratings')))]],

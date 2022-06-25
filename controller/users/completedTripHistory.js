@@ -27,10 +27,11 @@ exports.tripHistoryCompleted = async function(req,res) {
 
     }catch(err) {
         if (err) {
+            console.log(err)
             response.statusCode = 0
             response.code = 500
             response.message = 'Internal Server Error'
-            response.body.userId = req.body.userId
+            response.body.userId = req.query.userId
 
             return res.status(500).send(response);
         }

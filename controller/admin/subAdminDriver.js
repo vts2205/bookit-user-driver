@@ -3,8 +3,12 @@ var newOTP = require('otp-generators')
 var getToken = require('../../middlewares/create_token')
 const moment = require('moment')
 const fs = require('fs')
-const { s3bucketBuffer } = require('../../common/s3bucketBuffer1')
-const { Op } = require('sequelize')
+const {
+    s3bucketBuffer
+} = require('../../common/s3bucketBuffer1')
+const {
+    Op
+} = require('sequelize')
 
 
 
@@ -35,11 +39,19 @@ exports.subAdminDriver = async function(req, res) {
             location: req.body.location,
             license_number: req.body.licenseNumber,
             expiry_date: req.body.expiryDate,
-            password: newOTP.generate(8, { alphabets: true, upperCase: true, specialChar: true }),
+            password: newOTP.generate(8, {
+                alphabets: true,
+                upperCase: true,
+                specialChar: true
+            }),
             fcm_token: null,
             driver_status: 'pending',
             rental_type: '1',
-            referral: newOTP.generate(8, { alphabets: true, upperCase: true, specialChar: true }),
+            referral: newOTP.generate(8, {
+                alphabets: true,
+                upperCase: true,
+                specialChar: true
+            }),
             created_by: 'SubAdmin'
         }
 
@@ -63,7 +75,11 @@ exports.subAdminDriver = async function(req, res) {
         const register = await models.drivers.findOne({
             raw: true,
             where: {
-                contact: req.body.contact,
+                [Op.or]: [{
+                    contact: req.body.contact
+                }, {
+                    license_number: req.body.licenseNumber
+                }],
                 driver_status: {
                     [Op.ne]: 'rejected'
                 }
@@ -96,20 +112,49 @@ exports.subAdminDriver = async function(req, res) {
                 s3DataOwner.driver_id = driver_id
                 await models.drivers.create(dataJson)
             } else {
-                console.log(driverId.driver_id)
-                console.log((driverId.driver_id).split("_"))
-                let data = (driverId.driver_id).split("_");
-                console.log(data)
-                let number = (parseInt(data[1].toString()));
-                console.log(number++)
-                driver_id = 'driver_' + number++
-                    console.log(driver_id)
 
-                dataJson.driver_id = driver_id
-                s3data.driver_id = driver_id
-                s3DataCar.driver_id = driver_id
-                s3DataOwner.driver_id = driver_id
-                await models.drivers.create(dataJson)
+                const rejectedDriver = await models.drivers.findAll({
+                    raw: true,
+                    where: {
+                        [Op.or]: [{
+                            contact: req.body.contact
+                        }, {
+                            license_number: req.body.licenseNumber
+                        }],
+                        driver_status: {
+                            [Op.eq]: 'rejected'
+                        }
+                    }
+                })
+
+                if (rejectedDriver.length < 1) {
+                    console.log(driverId.driver_id)
+                    console.log((driverId.driver_id).split("_"))
+                    let data = (driverId.driver_id).split("_");
+                    console.log(data)
+                    let number = (parseInt(data[1].toString()));
+                    console.log(number++)
+                    driver_id = 'driver_' + number++
+                        console.log(driver_id)
+
+                    dataJson.driver_id = driver_id
+                    s3data.driver_id = driver_id
+                    s3DataCar.driver_id = driver_id
+                    s3DataOwner.driver_id = driver_id
+                    await models.drivers.create(dataJson)
+                } else {
+                    driver_id = rejectedDriver[0].driver_id
+                    dataJson.driver_id = driver_id
+                    s3data.driver_id = driver_id
+                    s3DataCar.driver_id = driver_id
+                    s3DataOwner.driver_id = driver_id
+
+                    await models.drivers.update(dataJson, {
+                        where: {
+                            driver_id: driver_id
+                        }
+                    })
+                }
             }
         }
 
@@ -160,19 +205,29 @@ exports.subAdminDriver = async function(req, res) {
 
 
         fs.writeFileSync(driverDocuments.profile_pic, req.files.profileImage.data, (err) => {
-            if (err) { return console.error(err) }
+            if (err) {
+                return console.error(err)
+            }
         })
         fs.writeFileSync(driverDocuments.aadhar_back, req.files.aadharBack.data, (err) => {
-            if (err) { return console.error(err) }
+            if (err) {
+                return console.error(err)
+            }
         })
         fs.writeFileSync(driverDocuments.aadhar_front, req.files.aadharFront.data, (err) => {
-            if (err) { return console.error(err) }
+            if (err) {
+                return console.error(err)
+            }
         })
         fs.writeFileSync(driverDocuments.license_front, req.files.licenseFront.data, (err) => {
-            if (err) { return console.error(err) }
+            if (err) {
+                return console.error(err)
+            }
         })
         fs.writeFileSync(driverDocuments.license_back, req.files.licenseBack.data, (err) => {
-            if (err) { return console.error(err) }
+            if (err) {
+                return console.error(err)
+            }
         })
 
 
@@ -328,32 +383,44 @@ exports.subAdminDriver = async function(req, res) {
 
 
         fs.writeFileSync(ownerData.aadhar_front, req.files.owneraadharFront.data, (err) => {
-            if (err) { return console.error(err) }
+            if (err) {
+                return console.error(err)
+            }
         })
         fs.writeFileSync(ownerData.aadhar_back, req.files.owneraadharBack.data, (err) => {
-            if (err) { return console.error(err) }
+            if (err) {
+                return console.error(err)
+            }
         })
         fs.writeFileSync(ownerData.pan_card, req.files.panCard.data, (err) => {
-            if (err) { return console.error(err) }
+            if (err) {
+                return console.error(err)
+            }
         })
 
         if (typeof req.files.passbook !== 'undefined') {
             fs.writeFileSync(ownerData.passbook, req.files.passbook.data, (err) => {
-                if (err) { return console.error(err) }
+                if (err) {
+                    return console.error(err)
+                }
             })
         } else {
             s3DataOwner.passbook = null
         }
         if (typeof req.files.rentalAgreement1 !== 'undefined') {
             fs.writeFileSync(ownerData.rental_agreement1, req.files.rentalAgreement1.data, (err) => {
-                if (err) { return console.error(err) }
+                if (err) {
+                    return console.error(err)
+                }
             })
         } else {
             s3DataOwner.rental_agreement1 = null
         }
         if (typeof req.files.rentalAgreement2 !== 'undefined') {
             fs.writeFileSync(ownerData.rental_agreement2, req.files.rentalAgreement2.data, (err) => {
-                if (err) { return console.error(err) }
+                if (err) {
+                    return console.error(err)
+                }
             })
         } else {
             s3DataOwner.rental_agreement2 = null
@@ -541,24 +608,36 @@ exports.subAdminDriver = async function(req, res) {
 
 
         fs.writeFileSync(carData.front_image, req.files.frontImage.data, (err) => {
-            if (err) { return console.error(err) }
+            if (err) {
+                return console.error(err)
+            }
         })
         fs.writeFileSync(carData.chase_image, req.files.chaseNumber.data, (err) => {
-            if (err) { return console.error(err) }
+            if (err) {
+                return console.error(err)
+            }
         })
         fs.writeFileSync(carData.rc_front, req.files.rcFront.data, (err) => {
-            if (err) { return console.error(err) }
+            if (err) {
+                return console.error(err)
+            }
         })
         fs.writeFileSync(carData.rc_back, req.files.rcBack.data, (err) => {
-            if (err) { return console.error(err) }
+            if (err) {
+                return console.error(err)
+            }
         })
         fs.writeFileSync(carData.insurance, req.files.insurance.data, (err) => {
-            if (err) { return console.error(err) }
+            if (err) {
+                return console.error(err)
+            }
         })
         console.log(typeof req.files.fc !== 'undefined')
         if (req.files.fc !== undefined) {
             fs.writeFileSync(carData.fc, req.files.fc.data, (err) => {
-                if (err) { return console.error(err) }
+                if (err) {
+                    return console.error(err)
+                }
             })
         } else {
             s3DataCar.fc = null
@@ -711,7 +790,9 @@ exports.subAdminDriver = async function(req, res) {
         })
 
 
-        let payload = { contact: req.body.contact }
+        let payload = {
+            contact: req.body.contact
+        }
 
         response.body = {
             name: req.body.name,
@@ -723,6 +804,10 @@ exports.subAdminDriver = async function(req, res) {
             carId: car_id,
             driver_id: driver_id,
             documentId: document_id,
+            owner_number: req.body.ownerNumber,
+            location: req.body.location,
+            license_number: req.body.licenseNumber,
+            expiry_date: req.body.expiryDate,
             Token: 'Bearer ' + getToken.getToken(payload, process.env.ACCESS_KEY)
         }
 

@@ -1,7 +1,9 @@
 const models = require('../../models/init-models').initModels()
 var newOTP = require('otp-generators')
 var getToken = require('../../middlewares/create_token')
-const { Op } = require('sequelize')
+const {
+    Op
+} = require('sequelize')
 
 
 exports.registerDriver = async function(req, res) {
@@ -20,7 +22,11 @@ exports.registerDriver = async function(req, res) {
         const register = await models.drivers.findOne({
             raw: true,
             where: {
-                contact: req.body.contact,
+                [Op.or]: [{
+                    contact: req.body.contact
+                }, {
+                    license_number: req.body.licensenumber
+                }],
                 driver_status: {
                     [Op.ne]: 'rejected'
                 }
@@ -33,6 +39,8 @@ exports.registerDriver = async function(req, res) {
             response.body = {}
             return res.status(200).send(response);
         }
+
+
 
         if (register === null) {
             var driverId = await models.drivers.findOne({
@@ -62,39 +70,92 @@ exports.registerDriver = async function(req, res) {
                     license_number: req.body.licensenumber,
                     expiry_date: req.body.expirydate,
                     rental_type: '1',
-                    referral: newOTP.generate(8, { alphabets: true, upperCase: true, specialChar: true }),
+                    referral: newOTP.generate(8, {
+                        alphabets: true,
+                        upperCase: true,
+                        specialChar: true
+                    }),
 
                 })
                 console.log('++++++++ Enters If Condition ++++++++++')
 
 
             } else {
-                console.log(driverId.driver_id)
-                console.log((driverId.driver_id).split("_"))
-                let data = (driverId.driver_id).split("_");
-                console.log(data)
-                let number = (parseInt(data[1].toString()));
-                console.log(number++)
-                driver_id = 'driver_' + number++
-                    console.log(driver_id)
 
 
-                await models.drivers.create({
-                    driver_id: driver_id,
-                    name: req.body.name,
-                    owner_name: req.body.ownerName,
-                    owner_number: req.body.ownerContact,
-                    location: req.body.location,
-                    email: req.body.email,
-                    contact: req.body.contact,
-                    password: 'raja',
-                    fcm_token: req.body.fcmToken,
-                    driver_status: 'pending',
-                    license_number: req.body.licensenumber,
-                    expiry_date: req.body.expirydate,
-                    rental_type: '1',
-                    referral: newOTP.generate(8, { alphabets: true, upperCase: true, specialChar: true }),
+                const rejectedDriver = await models.drivers.findAll({
+                    raw: true,
+                    where: {
+                        [Op.or]: [{
+                            contact: req.body.contact
+                        }, {
+                            license_number: req.body.licensenumber
+                        }],
+                        driver_status: {
+                            [Op.eq]: 'rejected'
+                        }
+                    }
                 })
+
+                console.log(rejectedDriver)
+
+                if (rejectedDriver.length < 1) {
+                    console.log(driverId.driver_id)
+                    console.log((driverId.driver_id).split("_"))
+                    let data = (driverId.driver_id).split("_");
+                    console.log(data)
+                    let number = (parseInt(data[1].toString()));
+                    console.log(number++)
+                    driver_id = 'driver_' + number++
+                        console.log(driver_id)
+
+
+                    await models.drivers.create({
+                        driver_id: driver_id,
+                        name: req.body.name,
+                        owner_name: req.body.ownerName,
+                        owner_number: req.body.ownerContact,
+                        location: req.body.location,
+                        email: req.body.email,
+                        contact: req.body.contact,
+                        password: 'raja',
+                        fcm_token: req.body.fcmToken,
+                        driver_status: 'pending',
+                        license_number: req.body.licensenumber,
+                        expiry_date: req.body.expirydate,
+                        rental_type: '1',
+                        referral: newOTP.generate(8, {
+                            alphabets: true,
+                            upperCase: true,
+                            specialChar: true
+                        }),
+                    })
+                } else {
+                    driver_id = rejectedDriver[0].driver_id
+
+
+                    await models.drivers.update({
+                        // driver_id: driver_id,
+                        name: req.body.name,
+                        owner_name: req.body.ownerName,
+                        owner_number: req.body.ownerContact,
+                        location: req.body.location,
+                        email: req.body.email,
+                        contact: req.body.contact,
+                        password: 'raja',
+                        fcm_token: req.body.fcmToken,
+                        driver_status: 'pending',
+                        license_number: req.body.licensenumber,
+                        expiry_date: req.body.expirydate,
+                        rental_type: '1',
+                        //  referral: newOTP.generate(8, { alphabets: true, upperCase: true, specialChar: true }),
+                    }, {
+                        where: {
+                            driver_id: driver_id
+                        }
+
+                    })
+                }
             }
 
             let payload = {
