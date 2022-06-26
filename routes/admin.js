@@ -16,6 +16,8 @@ const searchController = require('../controller/drivers/seach')
 
 
 
+
+
 router.post('/subadminRegister', subAdminRegister.subAdminDriver)
 router.get('/carDocuments', subCarDocuments.subAdminCar)
 router.get('/ownerDocuments', subOwnerDocuments.subAdminOwner)
@@ -28,6 +30,8 @@ router.get('/rejectedExcel', rejectedExcelController.rejectedList)
 router.get('/pendingExcel', pendingExcelController.pendingList)
 router.get('/confirmedExcel', confirmedExcelController.confirmedList)
 router.get('/search', searchController.search)
+
+
 
 
 

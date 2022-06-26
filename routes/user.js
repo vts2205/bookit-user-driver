@@ -13,10 +13,9 @@ const tripRequestController = require('../controller/users/tripRequest');
 const tripHistoryCompletedController = require('../controller/users/completedTripHistory');
 const tripCancelled = require('../controller/users/cancelledTripHistory');
 const upComingTripController = require('../controller/users/upcomingTripHistory');
+const userTripHistroyController = require('../controller/users/tripHistroyuser');
 const cronController = require('../controller/users/generateOtp');
 const cancelBookingController = require('../controller/users/cancel_booking')
-
-
 
 
 // router.use('/user', require('../controller/users/register') )
@@ -34,11 +33,9 @@ router.post('/tripRequest',tripRequestController.tripRequest)
 router.get('/completedHistory',tripHistoryCompletedController.tripHistoryCompleted)
 router.get('/cancelHistory',tripCancelled.tripHistoryCancelled)
 router.get('/upcomingHistory',upComingTripController.tripHistoryUpcoming)
+router.get('/tripHistroyuser',userTripHistroyController.usertripHistory)
 router.post('/cronOtp', cronController.cronOTP)
 router.post('/cancelBooking', cancelBookingController.cancelBooking )
-
-
-
 
 
 module.exports = router

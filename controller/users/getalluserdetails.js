@@ -20,7 +20,7 @@ exports.getalluserdata = async function (req, res) {
             where: {
                 user_id: req.query.userId
             },
-            attributes: ['name', 'email', 'contact', 'gender', 'dob', 'wallet', 'user_id']
+            attributes: ['name', 'email', 'contact', 'gender', 'dob', 'wallet', 'user_id','referral','created_at']
         })
 
         if (getuserdata !== null) {

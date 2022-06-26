@@ -1,7 +1,7 @@
 const models = require('../../models/init-models').initModels()
 
-exports.tripHistoryUpcoming = async function(req,res) {
-    console.log('Upcoming Trip History')
+exports.usertripHistory = async function(req,res) {
+    console.log('All Trip History')
     console.log(req.query)
 
     let response = {
@@ -17,11 +17,10 @@ exports.tripHistoryUpcoming = async function(req,res) {
         const tripDetails = await models.carShifts.findAll({
             raw:true,
             where:{
-                customer_id: req.query.userId,  
-                trip_status: 'upcoming'              
+                customer_id: req.query.userId       
             }
         })
-        response.body.upcomimgTrip = tripDetails
+        response.body.AlluserTripusers = tripDetails
         return res.status(200).send(response)
 
     }catch(err) {
