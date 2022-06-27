@@ -17,6 +17,7 @@ const upComingTripController = require('../controller/drivers/upcomingTripHistor
 const carDocumentsControllers = require('../controller/drivers/carDocuments')
 const driverDocumentsControllers = require('../controller/drivers/driverDocuments')
 const ownerDocumentsControllers = require('../controller/drivers/ownerDocument')
+const getprofileControllers = require('../controller/drivers/getprofiledetails')
 
 
 
@@ -24,7 +25,7 @@ const ownerDocumentsControllers = require('../controller/drivers/ownerDocument')
 // router.use('/user', require('../controller/users/register') )
 console.log('entered')
 router.post('/registerDriver', registerdriverController.registerDriver)
-router.get('/tripHistory',verifyToken, tripHistoryController.tripHistory)
+router.get('/tripHistory', tripHistoryController.tripHistory)
 router.post('/updateProfile', profileUpdateController.updateProfile)
 router.post('/updatePassword', passwordUpdateController.updatePassword)
 // router.post('/uploadDocuments', uploadDocumentsController.documentsDriver)
@@ -34,7 +35,7 @@ router.get('/upcomingTrip', upComingTripController.tripHistoryUpcoming)
 router.post('/carDocuments',carDocumentsControllers.carDocuments)
 router.post('/driverDocuments',driverDocumentsControllers.driverDocuments)
 router.post('/ownerDocument',ownerDocumentsControllers.ownerDocuments)
-
+router.get('/getprofiledetails', getprofileControllers.getprofiledetails)
 
 
 
