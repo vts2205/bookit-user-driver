@@ -1,12 +1,14 @@
 const models = require('../../models/init-models').initModels()
 const excel = require('excel4node')
 const fs = require('fs')
-const { Op } = require('sequelize')
+const { Op, Sequelize } = require('sequelize')
 const moment = require('moment')
+const sequelize = require('sequelize')
+//const sequelize = require('sequelize')
 
 exports.confirmedList = async function(req, res) {
 
-    // console.log(req)
+    // //console.log(req)
     let response = {
         statusCode: 1, // 1 success 0 failure
         code: 200,
@@ -16,19 +18,22 @@ exports.confirmedList = async function(req, res) {
     try {
 
         let date1 = (req.query.date1 + ' 00:00:00').toString()
-        let date2 = (req.query.date2 + ' 00:00:00').toString()
+        let date2 = (req.query.date2 + ' 23:59:59').toString()
 
-        let start = moment(date1, 'DD-MM-YYYY HH:mm:ss').format('YYYY-MM-DD HH:mm:ss')
-        let end = moment(date2, 'DD-MM-YYYY HH:mm:ss').format('YYYY-MM-DD HH:mm:ss')
+        let start = moment(date1, 'DD-MM-YYYY HH:mm:ss').add('330','minutes').format('YYYY-MM-DD HH:mm:ss')
+        let end = moment(date2, 'DD-MM-YYYY HH:mm:ss').add('330','minutes').format('YYYY-MM-DD HH:mm:ss')
 
         const rejectedDrivers = await models.drivers.findAll({
             raw: true,
             nest: true,
             where: {
                 driver_status: 'confirmed',
+                // updated_at: {
+                //     [Op.and]: [{[Op.gte]: [ Sequelize.literal('date('+date1+')')]}, {[Op.lte]: [ Sequelize.literal('date('+date2+')')]}]
+                // }
                 updated_at: {
-                    [Op.between]: [start, end]
-                }
+                    [Op.and]: [{[Op.gte]: start}, {[Op.lte]: end}]
+                }             
             },
             attributes: ['name', 'driver_id', 'contact', 'owner_name', 'owner_number', 'location', 'license_number', 'expiry_date', 'referral', 'created_at', 'updated_at','created_by'],
             include: [{
@@ -43,10 +48,10 @@ exports.confirmedList = async function(req, res) {
                 model: models.owner,
                 as: 'driver_owners',
                 attributes: ['driver_id', 'aadhar_front', 'aadhar_back', 'pan_card', 'passbook', 'rental_agreement1', 'rental_agreement2', 'created_at', 'updated_at']
-            }]
-
+            }],
+            order : [['updated_at','DESC']]
         })
-        console.log(rejectedDrivers)
+       // console.log(rejectedDrivers)
             // response.body.approvedDrivers = rejectedDrivers
 
 
@@ -150,9 +155,9 @@ exports.confirmedList = async function(req, res) {
 
 
 async function updateDriversCell(index, object, data) {
-    console.log('***********************************************************')
-    console.log(index)
-    console.log('***********************************************************')
+    //console.log('***********************************************************')
+    //console.log(index)
+    //console.log('***********************************************************')
 
     if (index === 1) {
         object.cell(index, 1)
@@ -213,9 +218,9 @@ async function updateDriversCell(index, object, data) {
 
 
 async function updateOwnerCell(index, object, data) {
-    console.log('***********************************************************')
-    console.log(index)
-    console.log('***********************************************************')
+    //console.log('***********************************************************')
+    //console.log(index)
+    //console.log('***********************************************************')
 
     if (index === 1) {
         object.cell(index, 1)
@@ -262,9 +267,9 @@ async function updateOwnerCell(index, object, data) {
 
 
 async function updateDocumentsCell(index, object, data) {
-    console.log('***********************************************************')
-    console.log(index)
-    console.log('***********************************************************')
+    //console.log('***********************************************************')
+    //console.log(index)
+    //console.log('***********************************************************')
 
     if (index === 1) {
         object.cell(index, 1)
@@ -306,9 +311,9 @@ async function updateDocumentsCell(index, object, data) {
 
 
 async function updateCarCell(index, object, data) {
-    console.log('***********************************************************')
-    console.log(index)
-    console.log('***********************************************************')
+    //console.log('***********************************************************')
+    //console.log(index)
+    //console.log('***********************************************************')
 
     if (index === 1) {
         object.cell(index, 1)

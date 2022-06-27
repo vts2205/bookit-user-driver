@@ -5,7 +5,7 @@ const { Op } = require('sequelize')
 const moment = require('moment')
 
 
-exports.rejectedList = async function(req, res) {
+exports.rejectedList = async function (req, res) {
 
     // console.log(req)
     let response = {
@@ -17,10 +17,10 @@ exports.rejectedList = async function(req, res) {
     try {
 
         let date1 = (req.query.date1 + ' 00:00:00').toString()
-        let date2 = (req.query.date2 + ' 00:00:00').toString()
+        let date2 = (req.query.date2 + ' 23:59:59').toString()
 
-        let start = moment(date1, 'DD-MM-YYYY HH:mm:ss').format('YYYY-MM-DD HH:mm:ss')
-        let end = moment(date2, 'DD-MM-YYYY HH:mm:ss').format('YYYY-MM-DD HH:mm:ss')
+        let start = moment(date1, 'DD-MM-YYYY HH:mm:ss').add('330', 'minutes').format('YYYY-MM-DD HH:mm:ss')
+        let end = moment(date2, 'DD-MM-YYYY HH:mm:ss').add('330', 'minutes').format('YYYY-MM-DD HH:mm:ss')
 
 
         const rejectedDrivers = await models.drivers.findAll({
@@ -28,11 +28,14 @@ exports.rejectedList = async function(req, res) {
             nest: true,
             where: {
                 driver_status: 'rejected',
+                // updated_at: {
+                //     [Op.between]: [start, end]
+                // }
                 updated_at: {
-                    [Op.between]: [start, end]
+                    [Op.and]: [{ [Op.gte]: start }, { [Op.lte]: end }]
                 }
             },
-            attributes: ['name', 'driver_id', 'contact', 'owner_name', 'owner_number', 'location', 'license_number', 'expiry_date', 'referral', 'created_at', 'updated_at','created_by'],
+            attributes: ['name', 'driver_id', 'contact', 'owner_name', 'owner_number', 'location', 'license_number', 'expiry_date', 'referral', 'created_at', 'updated_at', 'created_by'],
             include: [{
                 model: models.documents,
                 as: 'document_document',
@@ -49,7 +52,7 @@ exports.rejectedList = async function(req, res) {
 
         })
         console.log(rejectedDrivers)
-            // response.body.approvedDrivers = rejectedDrivers
+        // response.body.approvedDrivers = rejectedDrivers
 
 
 
@@ -139,7 +142,7 @@ exports.rejectedList = async function(req, res) {
             response.statusCode = 0
             response.code = 500
             response.message = 'Internal Server Error'
-                // response.body.userId = req.body.driverId
+            // response.body.userId = req.body.driverId
 
             return res.status(500).send(response);
         }
@@ -177,7 +180,7 @@ async function updateDriversCell(index, object, data) {
             .string(data[9])
         object.cell(index, 11)
             .string(data[10])
-            object.cell(index, 12)
+        object.cell(index, 12)
             .string(data[11])
 
     } else {
@@ -185,8 +188,8 @@ async function updateDriversCell(index, object, data) {
             .string(data.driver_id)
         object.cell(index, 2)
             .string(data.name === null ? 'null' : data.name)
-            // object.cell(index, 3)
-            //     .string(data.email === null ? 'null' : data.passbook)
+        // object.cell(index, 3)
+        //     .string(data.email === null ? 'null' : data.passbook)
         object.cell(index, 3)
             .string(data.contact === null ? 'null' : data.contact)
         object.cell(index, 4)
@@ -205,7 +208,7 @@ async function updateDriversCell(index, object, data) {
             .string(data.created_at === null ? 'null' : moment(data.created_at).utcOffset("+05:30").format('ll HH:mm:ss a').toString())
         object.cell(index, 11)
             .string(data.updated_at === null ? 'null' : moment(data.updated_at).utcOffset("+05:30").format('ll HH:mm:ss a').toString())
-            object.cell(index, 12)
+        object.cell(index, 12)
             .string(data.created_by === null ? 'null' : data.created_by)
     }
 }
