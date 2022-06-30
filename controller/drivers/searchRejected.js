@@ -20,6 +20,9 @@ exports.searchRejected = async function (req, res) {
     try {
         const search = await models.drivers.findAll({
             raw: true,
+            order: [
+                ['updated_at', 'DESC']
+            ],
             where: {
                 [Op.or]: {
                     driver_id: {
