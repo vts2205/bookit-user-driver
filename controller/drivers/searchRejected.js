@@ -40,7 +40,10 @@ exports.searchRejected = async function (req, res) {
             }
         })
 
-
+        for(const element of search) {
+            element.createdAt_local = moment(element.created_at).utcOffset("+05:30").format('DD-MM-YYYY h:mm:ss a')
+            element.updatedAt_local = moment(element.updated_at).utcOffset("+05:30").format('DD-MM-YYYY h:mm:ss a')
+        }
         response.body.searchResults = search
         return res.status(200).send(response)
     } catch (err) {
