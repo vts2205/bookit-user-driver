@@ -4,7 +4,7 @@ var getToken = require('../../middlewares/create_token')
 const { Op, Sequelize } = require('sequelize')
 
 
-exports.search = async function (req, res) {
+exports.searchPendng = async function (req, res) {
     console.log('driver register')
     console.log(req.query)
 
@@ -36,7 +36,7 @@ exports.search = async function (req, res) {
 
                     },
                 },
-                driver_status: 'confirmed'
+                driver_status: 'pending'
             }
         })
 
